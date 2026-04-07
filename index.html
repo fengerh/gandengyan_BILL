@@ -483,7 +483,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>干瞪眼记分器 v2.1</h1>
+            <h1>干瞪眼记分器 v2.3</h1>
             <p class="subtitle">简单清爽 · 手机电脑通用 · 本地存储</p>
         </header>
 
@@ -873,35 +873,38 @@
             }
         }
 
-        // 统一更新所有按钮和输入控件状态
-        function updateButtonStates() {
-            // 按钮状态：未选择赢家时记录按钮禁用
-            const winnerSelected = document.querySelector('input[name="winner"]:checked') !== null;
-            recordRoundBtn.disabled = gameState.isRoundRecorded || !winnerSelected;
-            newRoundBtn.disabled = !gameState.isRoundRecorded;
-            undoBtn.disabled = gameState.isNewRound || gameState.undoStack.length === 0 || !gameState.isRoundRecorded;
-            
-            // 输入控件状态
-            const winnerRadio = document.querySelector('input[name="winner"]:checked');
-            const winnerIndex = winnerRadio ? parseInt(winnerRadio.value) : -1;
-            
-            // 1. 赢家单选框：已记录时禁用
-            document.querySelectorAll('input[name="winner"]').forEach(radio => {
-                radio.disabled = gameState.isRoundRecorded;
-            });
-            
-            // 2. 炸弹倍数选择框：已记录时禁用
-            bombMultiplierSelect.disabled = gameState.isRoundRecorded;
-            
-            // 3. 手牌数下拉框：已记录时全部禁用；未记录时仅赢家禁用
-            document.querySelectorAll('.card-count').forEach(select => {
-                if (gameState.isRoundRecorded) {
-                    select.disabled = true;
-                } else {
-                    select.disabled = parseInt(select.dataset.index) === winnerIndex;
-                }
-            });
+
+// 统一更新所有按钮状态（你的三重保险逻辑）
+function updateButtonStates() {
+    const winnerSelected = document.querySelector('input[name="winner"]:checked') !== null;
+
+    // ======================
+    // 你的核心互斥逻辑
+    // ======================
+    // 1. 未记录：记录可用，撤销禁用，新开禁用
+    // 2. 已记录：记录禁用，撤销可用，新开可用
+    // 3. 已新开：记录可用，撤销禁用，新开禁用
+    recordRoundBtn.disabled = gameState.isRoundRecorded;
+    undoBtn.disabled = !gameState.isRoundRecorded || gameState.isNewRound || gameState.undoStack.length === 0;
+    newRoundBtn.disabled = !gameState.isRoundRecorded;
+
+    // 输入控件状态
+    const winnerRadio = document.querySelector('input[name="winner"]:checked');
+    const winnerIndex = winnerRadio ? parseInt(winnerRadio.value) : -1;
+    
+    document.querySelectorAll('input[name="winner"]').forEach(radio => {
+        radio.disabled = gameState.isRoundRecorded;
+    });
+    bombMultiplierSelect.disabled = gameState.isRoundRecorded;
+    document.querySelectorAll('.card-count').forEach(select => {
+        if (gameState.isRoundRecorded) {
+            select.disabled = true;
+        } else {
+            select.disabled = parseInt(select.dataset.index) === winnerIndex;
         }
+    });
+}
+
 
         // 更新限制信息显示
         function updateLimitsInfo() {
@@ -968,28 +971,29 @@
                     score = roundLimit;
                 }
                 
-                // 应用总限制（输分封顶，赢分不封顶）
-                if (totalLimit > 0) {
-                    let currentTotal = 0;
-                    gameState.rounds.forEach(round => {
-                        const playerScore = round.scores.find(s => s.playerIndex === index);
-                        if (playerScore) {
-                            currentTotal += playerScore.finalScore;
-                        }
-                    });
-                    
-                    // 计算该玩家当前累计输分（负数）
-                    const currentLoss = Math.abs(currentTotal);
-                    
-                    // 如果已经达到最高输分，不再扣分
-                    if (currentLoss >= totalLimit) {
-                        score = 0;
-                    } else {
-                        // 计算还能扣多少分
-                        const remainingLoss = totalLimit - currentLoss;
-                        score = Math.min(score, remainingLoss);
-                    }
-                }
+
+// 应用总限制（仅输分封顶，赢分不封顶 ✅ 最终修复）
+if (totalLimit > 0) {
+    let currentTotal = 0;
+    gameState.rounds.forEach(round => {
+        const playerScore = round.scores.find(s => s.playerIndex === index);
+        if (playerScore) currentTotal += playerScore.finalScore;
+    });
+    
+    // 只有【总分负数=输分】的玩家才封顶
+    // 【总分正数=赢分】的玩家，正常输分，不封顶
+    if (currentTotal < 0) {
+        const currentLoss = Math.abs(currentTotal);
+        if (currentLoss >= totalLimit) {
+            score = 0;
+        } else {
+            const remainingLoss = totalLimit - currentLoss;
+            score = Math.min(score, remainingLoss);
+        }
+    }
+}
+
+
                 
                 totalLoserScore += score;
                 loserScores.push({
@@ -1025,145 +1029,138 @@
             };
         }
 
-        // 记录当前局
-        function recordCurrentRound() {
-            if (gameState.isRoundRecorded) {
-                alert('本局已记录，请点击"打开新一局"开始下一局！');
-                return;
-            }
-            
-            const winnerRadio = document.querySelector('input[name="winner"]:checked');
-            if (!winnerRadio) {
-                alert('请先选择本局赢家！');
-                return;
-            }
-            
-            const calculation = calculateCurrentRound();
-            if (!calculation) {
-                alert('分数计算失败，请检查输入！');
-                return;
-            }
 
-            if (!gameState.isNewRound) {
-                gameState.undoStack.push(JSON.parse(JSON.stringify(gameState)));
-            }
 
-            const roundRecord = {
-                roundNumber: gameState.currentRound,
-                winnerIndex: calculation.winnerIndex,
-                winnerName: gameState.players[calculation.winnerIndex],
-                scores: calculation.loserScores.map(loser => ({
-                    playerIndex: loser.playerIndex,
-                    playerName: gameState.players[loser.playerIndex],
-                    cardCount: loser.cardCount,
-                    baseScore: loser.baseScore,
-                    finalScore: -loser.finalScore,
-                    isSpring: loser.isSpring
-                })),
-                winnerScore: {
-                    playerIndex: calculation.winnerIndex,
-                    playerName: gameState.players[calculation.winnerIndex],
-                    finalScore: calculation.totalWinnerScore
-                },
-                bombMultiplier: calculation.bombMultiplier,
-                roundLimit: calculation.roundLimit,
-                totalLimit: calculation.totalLimit,
-                timestamp: new Date().toISOString()
-            };
-            
-            roundRecord.scores.push({
-                playerIndex: calculation.winnerIndex,
-                playerName: gameState.players[calculation.winnerIndex],
-                cardCount: 0,
-                baseScore: calculation.totalWinnerScore,
-                finalScore: calculation.totalWinnerScore,
-                isSpring: false,
-                isWinner: true
-            });
 
-            gameState.rounds.push(roundRecord);
-            gameState.lastWinner = calculation.winnerIndex;
-            gameState.bombMultiplier = calculation.bombMultiplier;
-            gameState.isRoundRecorded = true;
+function recordCurrentRound() {
+    if (gameState.isRoundRecorded) {
+        alert('本局已记录！');
+        return;
+    }
+    const winnerRadio = document.querySelector('input[name="winner"]:checked');
+    if (!winnerRadio) {
+        alert('请先选择本局赢家！');
+        return;
+    }
+    const calculation = calculateCurrentRound();
+    if (!calculation) {
+        alert('分数计算失败！');
+        return;
+    }
 
-            const historyRecord = {
-                roundNumber: gameState.currentRound,
-                winner: gameState.players[calculation.winnerIndex],
-                losers: calculation.loserScores.map(loser => ({
-                    name: gameState.players[loser.playerIndex],
-                    cardCount: loser.cardCount,
-                    score: loser.finalScore,
-                    isSpring: loser.isSpring
-                })),
-                totalScore: calculation.totalWinnerScore,
-                bombMultiplier: calculation.bombMultiplier,
-                timestamp: new Date().toLocaleString()
-            };
-            gameState.history.push(historyRecord);
+    // ✅ 修复1：记录前强制保存状态（深拷贝）
+    gameState.undoStack = []; // 先清空旧栈，避免重复
+    gameState.undoStack.push(JSON.parse(JSON.stringify(gameState)));
 
-            saveGameState();
-            updateButtonStates();
+    // 下方原有数据代码不动，直接保留...
+    const roundRecord = {
+        roundNumber: gameState.currentRound,
+        winnerIndex: calculation.winnerIndex,
+        winnerName: gameState.players[calculation.winnerIndex],
+        scores: calculation.loserScores.map(loser => ({
+            playerIndex: loser.playerIndex,
+            playerName: gameState.players[loser.playerIndex],
+            cardCount: loser.cardCount,
+            baseScore: loser.baseScore,
+            finalScore: -loser.finalScore,
+            isSpring: loser.isSpring
+        })),
+        winnerScore: {
+            playerIndex: calculation.winnerIndex,
+            playerName: gameState.players[calculation.winnerIndex],
+            finalScore: calculation.totalWinnerScore
+        },
+        bombMultiplier: calculation.bombMultiplier,
+        roundLimit: calculation.roundLimit,
+        totalLimit: calculation.totalLimit,
+        timestamp: new Date().toISOString()
+    };
+    roundRecord.scores.push({
+        playerIndex: calculation.winnerIndex,
+        playerName: gameState.players[calculation.winnerIndex],
+        cardCount: 0,
+        baseScore: calculation.totalWinnerScore,
+        finalScore: calculation.totalWinnerScore,
+        isSpring: false,
+        isWinner: true
+    });
+    gameState.rounds.push(roundRecord);
+    gameState.lastWinner = calculation.winnerIndex;
+    gameState.bombMultiplier = calculation.bombMultiplier;
+    gameState.isRoundRecorded = true;
+    // ✅ 修复2：记录后 必须重置isNewRound=false（核心！）
+    gameState.isNewRound = false;
 
-            if (calculation.totalWinnerScore === 0) {
-                updateStatusBar(`第 ${gameState.currentRound} 局记录成功（所有输家已封顶，赢家得0分）`);
-            } else {
-                updateStatusBar(`第 ${gameState.currentRound} 局记录成功，请点击"打开新一局"开始下一局`);
-            }
-            renderHistory();
-        }
+    // 历史代码不动...
+    const historyRecord = {
+        roundNumber: gameState.currentRound,
+        winner: gameState.players[calculation.winnerIndex],
+        losers: calculation.loserScores.map(loser => ({
+            name: gameState.players[loser.playerIndex],
+            cardCount: loser.cardCount,
+            score: loser.finalScore,
+            isSpring: loser.isSpring
+        })),
+        totalScore: calculation.totalWinnerScore,
+        bombMultiplier: calculation.bombMultiplier,
+        timestamp: new Date().toLocaleString()
+    };
+    gameState.history.push(historyRecord);
 
-        // 打开新一局
-        function openNewRound() {
-            if (!gameState.isRoundRecorded) {
-                alert('请先记录本局再开始新一局！');
-                return;
-            }
-            
-            gameState.isNewRound = true;
-            gameState.currentRound++;
-            gameState.undoStack = [];
-            gameState.isRoundRecorded = false;
-            
-            // 新开局时炸弹倍数重置为默认1倍
-            gameState.bombMultiplier = 1;
-            bombMultiplierSelect.value = '1';
-            
-            // 重新渲染（会自动清空赢家选择）
-            updateWinnerRadio();
-            renderGameArea();
-            
-            saveGameState();
-            updateStatusBar(`开始第 ${gameState.currentRound} 局（上一局不可撤销）`);
-        }
+    saveGameState();
+    updateButtonStates(); // ✅ 强制刷新按钮
+    renderGameArea();
+    renderHistory();
+    updateStatusBar(`第 ${gameState.currentRound} 局记录成功`);
+}
 
-        // 撤销上一局
-        function undoLastRound() {
-            if (gameState.isNewRound) {
-                alert('新开局后无法撤销上一局！');
-                return;
-            }
-            if (gameState.undoStack.length === 0) {
-                alert('没有可撤销的操作！');
-                return;
-            }
-            if (!gameState.isRoundRecorded) {
-                alert('本局尚未记录，无需撤销！');
-                return;
-            }
 
-            const previousState = gameState.undoStack.pop();
-            Object.assign(gameState, previousState);
 
-            // 撤销后同步更新炸弹倍数下拉框
-            bombMultiplierSelect.value = gameState.bombMultiplier.toString();
 
-            updateWinnerRadio();
-            renderGameArea();
-            renderHistory();
-            
-            saveGameState();
-            updateStatusBar(`已撤销第 ${gameState.currentRound} 局`);
-        }
+// 打开新一局（修复：新开后清空撤销，无法撤销上一局）
+function openNewRound() {
+    if (!gameState.isRoundRecorded) {
+        alert('请先记录本局！');
+        return;
+    }
+    // ✅ 修复3：新开后 清空栈+标记isNewRound（彻底锁死撤销）
+    gameState.undoStack = [];
+    gameState.isNewRound = true;
+    gameState.currentRound++;
+    gameState.isRoundRecorded = false;
+    gameState.bombMultiplier = 1;
+    bombMultiplierSelect.value = '1';
+
+    updateWinnerRadio();
+    renderGameArea();
+    saveGameState();
+    updateButtonStates();
+    updateStatusBar(`开始第 ${gameState.currentRound} 局`);
+}
+
+
+// 撤销上一局（修复：完整回滚所有状态）
+function undoLastRound() {
+    // 严格判断：无撤销记录 / 未记录 / 已新开 → 不能撤销
+    if (gameState.undoStack.length === 0 || !gameState.isRoundRecorded || gameState.isNewRound) {
+        alert('无法撤销！');
+        return;
+    }
+
+    // ✅ 核心：回滚完整游戏状态
+    const previousState = gameState.undoStack.pop();
+    Object.assign(gameState, previousState);
+
+    // 同步界面控件
+    bombMultiplierSelect.value = gameState.bombMultiplier.toString();
+    updateWinnerRadio();
+    renderGameArea();
+    renderHistory();
+    
+    saveGameState();
+    updateButtonStates(); // ✅ 刷新按钮
+    updateStatusBar(`已撤销第 ${gameState.currentRound} 局`);
+}
 
         // 导出数据
         function exportData() {
