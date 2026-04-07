@@ -84,16 +84,27 @@
             margin-bottom: 0;
         }
         
-        .section-title {
-            font-size: 1.2rem;
-            color: var(--dark-gray);
-            margin-bottom: 15px;
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+.section-title {
+    font-size: 1.2rem;
+    color: var(--dark-gray);
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 5px;
+    
+    /* 核心布局：用 flex，且不挤压内部 */
+    display: flex;
+    justify-content: space-between; /* 左右分开 */
+    align-items: center; /* 垂直居中 */
+    gap: 10px; /* 给一点间距 */
+    position: relative; /* 新增这一行 */
+}
+
+/* 让左边文字自适应，右边按钮固定宽度 */
+.section-title span {
+    flex-shrink: 0; /* 禁止左边文字压缩 */
+}
+
+
         
         .player-count-setup {
             margin-bottom: 15px;
@@ -424,66 +435,80 @@
             font-size: 0.9rem;
         }
         
-        @media (max-width: 768px) {
-            .players-setup {
-                flex-direction: column;
-            }
+@media (max-width: 768px) {
+
             
             .controls {
                 flex-direction: column;
             }
             
-            button {
-                width: 100%;
-                margin-bottom: 5px;
-            }
-            
-            .scores-table {
-                font-size: 0.85rem;
-            }
-            
-            .scores-table td select {
-                width: 60px;
-                padding: 4px;
-            }
-            
-            .game-settings {
-                flex-direction: column;
-            }
-            
-            .winner-radio-group {
-                flex-direction: column;
-                gap: 8px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-            
-            .container {
-                padding: 0 5px;
-            }
-            
-            h1 {
-                font-size: 1.5rem;
-            }
-            
-            .scores-table {
-                font-size: 0.8rem;
-            }
-            
-            .scores-table th, .scores-table td {
-                padding: 6px;
-            }
-        }
+button {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+/* 清空历史按钮 - 绝对定位终极版 */
+#clearHistoryBtn {
+    position: absolute !important;
+    right: 0 !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    
+    /* 固定小尺寸 */
+    width: 70px !important;
+    height: 24px !important;
+    padding: 0 !important;
+    font-size: 12px !important;
+    line-height: 24px !important;
+    
+    /* 强制不拉伸 */
+    min-width: unset !important;
+    max-width: unset !important;
+    box-sizing: border-box !important;
+}
+
+/* 手机端缩小 */
+@media (max-width: 768px) {
+    #clearHistoryBtn {
+        width: 60px !important;
+        height: 20px !important;
+        font-size: 11px !important;
+        line-height: 20px !important;
+    }
+}
+
+/* 电脑端专属修复（强制覆盖所有冲突） */
+@media (min-width: 769px) {
+    .section-title {
+        position: relative !important;
+        padding-right: 80px !important; /* 给按钮留位置 */
+    }
+    
+    #clearHistoryBtn {
+        position: absolute !important;
+        right: 0 !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        width: 70px !important;
+        height: 24px !important;
+        padding: 0 !important;
+        font-size: 12px !important;
+        line-height: 24px !important;
+        min-width: unset !important;
+        max-width: unset !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+        flex: none !important;
+    }
+}
+
+
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>干瞪眼记分器 v2.5</h1>
+            <h1>干瞪眼记分器 v2.6.3</h1>
             <p class="subtitle">简单清爽 · 手机电脑通用 · 本地存储</p>
         </header>
 
@@ -524,8 +549,7 @@
                 <button id="setupBtn">开始游戏</button>
     <button class="secondary" id="exportBtn">导出数据</button>
     <button class="secondary" id="importBtn">导入数据</button>
-
-                <button class="secondary" id="clearBtn">清空设置</button>
+                <button class="danger" id="clearBtn">清空设置</button>
             </div>
         </section>
 
@@ -600,9 +624,14 @@
         </section>
 
         <section class="history-section" id="historySection" style="display: none;">
-            <h2 class="section-title">对局历史</h2>
+
+
+<h2 class="section-title">
+    <span>对局历史</span>
+    <button class="danger" id="clearHistoryBtn">清空历史</button>
+</h2>
+
             <div class="export-import">
-                <button class="danger" id="clearHistoryBtn">清空历史</button>
                 <input type="file" id="importFile" accept=".json" style="display: none;">
             </div>
             <div id="historyContainer">
