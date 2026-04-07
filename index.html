@@ -68,8 +68,8 @@
             overflow: hidden;
         }
         .setup-section.collapsed {
-            max-height: 65px !important;
-            padding-bottom: 10px;
+            max-height: 55px !important;
+            padding-bottom: 8px;
         }
         .setup-toggle {
             text-align: center;
@@ -105,7 +105,7 @@
         }
         
         .player-count-setup select {
-            padding: 8px 12px;
+            padding: 4px 8px;
             border: 2px solid #ddd;
             border-radius: 4px;
             font-size: 14px;
@@ -483,7 +483,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>干瞪眼记分器 v2.3</h1>
+            <h1>干瞪眼记分器 v2.5</h1>
             <p class="subtitle">简单清爽 · 手机电脑通用 · 本地存储</p>
         </header>
 
@@ -492,7 +492,7 @@
                 游戏设置
                 <span class="setup-toggle" id="setupToggle">点击折叠</span>
             </h2>
-            <div class="player-count-setup">
+            <div class="player-count-setup" style="display: flex; flex-direction: column; gap: 6px;">
                 <label for="playerCount">玩家人数 (2-8人):</label>
                 <select id="playerCount">
                     <option value="2">2人</option>
@@ -522,6 +522,9 @@
             
             <div class="controls">
                 <button id="setupBtn">开始游戏</button>
+    <button class="secondary" id="exportBtn">导出数据</button>
+    <button class="secondary" id="importBtn">导入数据</button>
+
                 <button class="secondary" id="clearBtn">清空设置</button>
             </div>
         </section>
@@ -599,8 +602,6 @@
         <section class="history-section" id="historySection" style="display: none;">
             <h2 class="section-title">对局历史</h2>
             <div class="export-import">
-                <button class="secondary export-btn" id="exportBtn">导出数据</button>
-                <button class="secondary import-btn" id="importBtn">导入数据</button>
                 <button class="danger" id="clearHistoryBtn">清空历史</button>
                 <input type="file" id="importFile" accept=".json" style="display: none;">
             </div>
