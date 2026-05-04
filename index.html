@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>干瞪眼记分器 v20260504.1950</title>
+    <title>干瞪眼记分器 v20260504.2050</title>
     <style>
         :root {
             --primary-color: #4CAF50;
@@ -228,6 +228,18 @@
             button { width: 100%; margin-bottom: 5px; }
             #clearHistoryBtn { width: 60px !important; height: 20px !important; line-height: 20px !important; font-size: 11px !important; }
         }
+
+        .locked-card {
+            display: inline-block;
+            width: 70px;           /* 与下拉框同宽，保持列对齐 */
+            padding: 6px;
+            background: #e0e0e0;
+            color: #666;
+            border-radius: 4px;
+            font-size: 14px;
+            text-align: center;
+        }
+
     </style>
 </head>
 <body>
@@ -440,34 +452,51 @@
         }
 
         function onWinnerChange() {
-            // 如果本局已经记录，不允许修改
             if (gameState.isRoundRecorded) return;
 
             updateSpringRuleInfo();
 
             const winnerRadio = document.querySelector('input[name="winner"]:checked');
             if (!winnerRadio) return;
-            const winnerIndex = parseInt(winnerRadio.value);
+            const newWinnerIndex = parseInt(winnerRadio.value);
 
-            // 只处理手牌列
-            document.querySelectorAll('.card-count').forEach(select => {
-                const idx = parseInt(select.dataset.index);
-                if (idx === winnerIndex) {
-                    select.value = '0';      // 强制清0
-                    select.disabled = true;  // 锁定
+            //遍历所有玩家行，修改手牌格（每行第3个td，索引2）
+            const rows = document.querySelectorAll('#scoresBody tr');
+            rows.forEach(row => {
+                const idx = parseInt(row.getAttribute('data-player-index'));
+                const cardTd = row.children[2]; // 手牌列（玩家|炸弹|手牌|春天|本局）索引2
+
+                if (idx === newWinnerIndex) {
+                    // 新赢家：替换为锁定文本
+                    cardTd.innerHTML = '<span class="locked-card">0</span>';
                 } else {
-                    select.disabled = false; // 其他玩家恢复可选（保持原值）
+                    // 其他人：如果之前被锁定（曾是赢家），则恢复为下拉框
+                    if (!cardTd.querySelector('.card-count')) {
+                        // 重建下拉框，默认值为0，但保留该玩家之前已选的值？这里取当前内存中无，故设为0
+                        // 注意：之前的选择在切换前已丢失，因为原赢家手牌一直是0且锁定。
+                        // 恢复时设为0是合理的。
+                        let opts = '';
+                        for (let i = 0; i <= 5; i++) {
+                            opts += `<option value="${i}" ${i === 0 ? 'selected' : ''}>${i}</option>`;
+                        }
+                        cardTd.innerHTML = `<select class="card-count" data-index="${idx}">
+                            ${opts}
+                        </select>`;
+                    }
+                    // 确保可编辑
+                    const sel = cardTd.querySelector('.card-count');
+                    if (sel) sel.disabled = false;
                 }
             });
 
-            // 炸弹列保持所有可选（除非已记录）
-            document.querySelectorAll('.bomb-count').forEach(select => {
-                select.disabled = gameState.isRoundRecorded; // 记录时为true，否则false
+            // 炸弹列全部保持可编辑
+            document.querySelectorAll('.bomb-count').forEach(sel => {
+                sel.disabled = false;
             });
 
-            calculateCurrentRound();  // 重新计算并显示分数
+            calculateCurrentRound();
             updateButtonStates();
-        }
+        }   
 
         // 设置玩家
         function setupPlayers() {
@@ -535,11 +564,13 @@
                         </select>
                     </td>
                     <td>
-                        <select class="card-count" data-index="${index}" ${index === winnerIndex ? 'disabled' : (gameState.isRoundRecorded ? 'disabled' : '')}>
-                            ${cardOpts}
-                        </select>
+                        ${index === winnerIndex 
+                            ? '<span class="locked-card">0</span>' 
+                            : `<select class="card-count" data-index="${index}" ${gameState.isRoundRecorded ? 'disabled' : ''}>
+                                ${cardOpts}
+                            </select>`
+                        }
                     </td>
-                    
                     <td class="spring-status" data-index="${index}">-</td>
                     <td data-score-index="${index}">待计算</td>
                 `;
@@ -964,7 +995,8 @@
                         <div class="round-details">
                             <span class="player-score winner-score">赢家: ${rec.winner} (+${rec.totalScore})</span>
                             ${loserHtml}
-                            ${rec.bombCounts ? rec.bombCounts.map(b => `<span class="player-score" style="background:#fff3e0;">${b.name}: ${b.bombCount}炸</span>`).join('') : `<span class="player-score">总炸弹: ${rec.totalBombCount}</span>`}
+                            ${rec.bombCounts ? rec.bombCounts.map(b => `<span class="player-score" style="background:#fff3e0;">${b.name}: ${b.bombCount}炸</span>`).join('') : ''}
+                            <span class="player-score">总炸弹: ${rec.totalBombCount} (×${Math.pow(2, rec.totalBombCount)})</span>
                         </div>`;
                     historyContainer.appendChild(div);
                 });
