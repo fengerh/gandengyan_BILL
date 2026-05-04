@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>干瞪眼记分器 v20260407.0931</title>
+    <title>干瞪眼记分器 v20260504.1950</title>
     <style>
         :root {
             --primary-color: #4CAF50;
@@ -17,11 +17,7 @@
             --box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Arial', 'Microsoft YaHei', sans-serif;
@@ -32,10 +28,7 @@
             padding: 20px;
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .container { max-width: 1200px; margin: 0 auto; }
         
         header {
             text-align: center;
@@ -46,18 +39,9 @@
             box-shadow: var(--box-shadow);
         }
         
-        h1 {
-            color: var(--primary-color);
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-        }
+        h1 { color: var(--primary-color); font-size: 1.8rem; margin-bottom: 5px; }
+        .subtitle { color: #666; font-size: 0.9rem; }
         
-        .subtitle {
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        /* 折叠区域样式 */
         .setup-section {
             background: white;
             padding: 20px;
@@ -80,41 +64,24 @@
             position: relative;
             z-index: 1;
         }
-        .setup-section.collapsed .section-title {
-            margin-bottom: 0;
-        }
+        .setup-section.collapsed .section-title { margin-bottom: 0; }
         
-.section-title {
-    font-size: 1.2rem;
-    color: var(--dark-gray);
-    margin-bottom: 15px;
-    border-bottom: 2px solid var(--primary-color);
-    padding-bottom: 5px;
-    
-    /* 核心布局：用 flex，且不挤压内部 */
-    display: flex;
-    justify-content: space-between; /* 左右分开 */
-    align-items: center; /* 垂直居中 */
-    gap: 10px; /* 给一点间距 */
-    position: relative; /* 新增这一行 */
-}
-
-/* 让左边文字自适应，右边按钮固定宽度 */
-.section-title span {
-    flex-shrink: 0; /* 禁止左边文字压缩 */
-}
-
-
-        
-        .player-count-setup {
+        .section-title {
+            font-size: 1.2rem;
+            color: var(--dark-gray);
             margin-bottom: 15px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            position: relative;
         }
+        .section-title span { flex-shrink: 0; }
         
-        .player-count-setup label {
-            font-weight: bold;
-            margin-right: 10px;
-        }
-        
+        .player-count-setup { margin-bottom: 15px; }
+        .player-count-setup label { font-weight: bold; margin-right: 10px; }
         .player-count-setup select {
             padding: 4px 8px;
             border: 2px solid #ddd;
@@ -124,380 +91,143 @@
         }
         
         .players-setup {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 15px;
+            display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px;
         }
-        
-        .player-input {
-            flex: 1;
-            min-width: 120px;
-        }
-        
+        .player-input { flex: 1; min-width: 120px; }
         .player-input input {
-            width: 100%;
-            padding: 8px 12px;
-            border: 2px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            max-width: 100%;
+            width: 100%; padding: 8px 12px;
+            border: 2px solid #ddd; border-radius: 4px; font-size: 14px;
         }
+        .player-input input:focus { border-color: var(--primary-color); outline: none; }
         
-        .player-input input:focus {
-            border-color: var(--primary-color);
-            outline: none;
-        }
-        
-        /* 分数限制设置区样式 */
         .score-limit-setup {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin: 15px 0;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: var(--border-radius);
+            display: flex; flex-wrap: wrap; gap: 15px; margin: 15px 0;
+            padding: 10px; background: #f8f9fa; border-radius: var(--border-radius);
         }
-        .limit-item {
-            flex: 1;
-            min-width: 180px;
-        }
-        .limit-item label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: var(--dark-gray);
-        }
+        .limit-item { flex: 1; min-width: 180px; }
+        .limit-item label { display: block; margin-bottom: 5px; font-weight: bold; color: var(--dark-gray); }
         .limit-item input {
-            width: 100%;
-            padding: 8px 12px;
-            border: 2px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
+            width: 100%; padding: 8px 12px; border: 2px solid #ddd; border-radius: 4px; font-size: 14px;
         }
-        .limit-item input:disabled {
-            background: #eee;
-            cursor: not-allowed;
-        }
+        .limit-item input:disabled { background: #eee; cursor: not-allowed; }
         
-        .controls {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 15px 0;
-        }
-        
+        .controls { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
         button {
-            padding: 10px 15px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            flex: 1;
-            min-width: 100px;
+            padding: 10px 15px; background: var(--primary-color); color: white;
+            border: none; border-radius: var(--border-radius); cursor: pointer;
+            font-size: 14px; transition: all 0.3s ease; flex: 1; min-width: 100px;
         }
-        
-        button:hover {
-            background: #45a049;
-            transform: translateY(-1px);
-        }
-        
-        button.secondary {
-            background: var(--secondary-color);
-        }
-        
-        button.secondary:hover {
-            background: #1976d2;
-        }
-        
-        button.danger {
-            background: var(--danger-color);
-        }
-        
-        button.danger:hover {
-            background: #d32f2f;
-        }
-        
-        button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
+        button:hover { background: #45a049; transform: translateY(-1px); }
+        button.secondary { background: var(--secondary-color); }
+        button.secondary:hover { background: #1976d2; }
+        button.danger { background: var(--danger-color); }
+        button.danger:hover { background: #d32f2f; }
+        button:disabled { background: #ccc; cursor: not-allowed; transform: none; }
         
         .game-area {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 20px;
-            margin-bottom: 20px;
+            background: white; border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow); padding: 20px; margin-bottom: 20px;
         }
-        
         .round-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee;
         }
         
-        .game-settings {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 15px;
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: var(--border-radius);
-        }
-        
-        .setting-item {
-            flex: 1;
-            min-width: 150px;
-        }
-        
-        .setting-item label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: var(--dark-gray);
-        }
-        
-        .setting-item input, .setting-item select {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        
-        /* 赢家单选框样式 */
         .winner-selection {
-            margin-bottom: 15px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: var(--border-radius);
+            margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: var(--border-radius);
         }
         .winner-selection label.main-label {
-            font-weight: bold;
-            margin-right: 10px;
-            display: block;
-            margin-bottom: 10px;
+            font-weight: bold; margin-right: 10px; display: block; margin-bottom: 10px;
         }
-        .winner-radio-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        .winner-radio-item {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-        .winner-radio-item input {
-            margin-right: 5px;
-            accent-color: var(--primary-color);
-        }
+        .winner-radio-group { display: flex; flex-wrap: wrap; gap: 15px; }
+        .winner-radio-item { display: flex; align-items: center; cursor: pointer; }
+        .winner-radio-item input { margin-right: 5px; accent-color: var(--primary-color); }
         
-        .scores-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        
+        .scores-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         .scores-table th, .scores-table td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center;
+            border: 1px solid #ddd; padding: 10px; text-align: center;
         }
-        
-        .scores-table th {
-            background-color: var(--primary-color);
-            color: white;
-            font-weight: bold;
-        }
-        
-        .scores-table tr:nth-child(even) {
-            background-color: var(--light-gray);
-        }
-        
-        /* 手牌数下拉框样式 */
+        .scores-table th { background-color: var(--primary-color); color: white; font-weight: bold; }
+        .scores-table tr:nth-child(even) { background-color: var(--light-gray); }
         .scores-table td select {
-            width: 70px;
-            padding: 6px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            text-align: center;
-            font-size: 14px;
-            background: white;
+            width: 70px; padding: 6px; border: 1px solid #ddd;
+            border-radius: 4px; text-align: center; font-size: 14px; background: white;
         }
-        .scores-table td select:disabled {
-            background: #eee;
-            cursor: not-allowed;
-            color: #999;
+        .scores-table td select:disabled { background: #eee; cursor: not-allowed; color: #999; }
+        .scores-table td select.bomb-count {
+            width: 65px; background: #fffbe6;
         }
-        
-        .scores-table td.spring-status {
-            font-weight: bold;
-            color: var(--warning-color);
-        }
-        
-        .total-row {
-            font-weight: bold;
-            background-color: #e8f5e9 !important;
-        }
+        .scores-table td.spring-status { font-weight: bold; color: var(--warning-color); }
+        .total-row { font-weight: bold; background-color: #e8f5e9 !important; }
         
         .history-section {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 20px;
-            margin-top: 20px;
+            background: white; border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow); padding: 20px; margin-top: 20px;
         }
+        
+        /* 累计分数表美化 */
+        .scoreboard-container { margin-bottom: 20px; }
+        .scoreboard-table {
+            border-collapse: separate; border-spacing: 0;
+            width: 100%; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 15px;
+        }
+        .scoreboard-table th {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white; padding: 12px; font-weight: 600; font-size: 1rem;
+        }
+        .scoreboard-table td {
+            padding: 10px; text-align: center; background-color: #fff;
+            border-bottom: 1px solid #f0f0f0; font-size: 0.95rem;
+        }
+        .scoreboard-table tr:last-child td { border-bottom: none; }
+        .scoreboard-table tr:nth-child(even) td { background-color: #f9f9f9; }
+        .scoreboard-table td.positive { color: #2E7D32; font-weight: bold; }
+        .scoreboard-table td.negative { color: #c62828; font-weight: bold; }
         
         .round-item {
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background: #f9f9f9;
+            margin-bottom: 10px; padding: 10px; border: 1px solid #ddd;
+            border-radius: 4px; background: #f9f9f9;
         }
-        
-        .round-item:hover {
-            border-color: var(--primary-color);
-            background: #f0fff0;
-        }
-        
-        .round-title {
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 5px;
-        }
-        
-        .round-details {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            font-size: 0.9rem;
-        }
-        
+        .round-item:hover { border-color: var(--primary-color); background: #f0fff0; }
+        .round-title { font-weight: bold; color: var(--primary-color); margin-bottom: 5px; }
+        .round-details { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.9rem; }
         .player-score {
-            background: #e3f2fd;
-            padding: 3px 8px;
-            border-radius: 10px;
-            font-size: 0.85rem;
+            background: #e3f2fd; padding: 3px 8px; border-radius: 10px; font-size: 0.85rem;
         }
+        .winner-score { background: #e8f5e9; color: var(--success-color); font-weight: bold; }
+        .loser-score { background: #ffebee; color: var(--danger-color); }
+        .spring-marker { color: var(--warning-color); font-weight: bold; }
         
-        .winner-score {
-            background: #e8f5e9;
-            color: var(--success-color);
-            font-weight: bold;
-        }
-        
-        .loser-score {
-            background: #ffebee;
-            color: var(--danger-color);
-        }
-        
-        .spring-marker {
-            color: var(--warning-color);
-            font-weight: bold;
-        }
-        
-        .export-import {
-            margin-top: 20px;
-        }
-        
-        .export-btn, .import-btn {
-            margin-right: 10px;
-            margin-bottom: 10px;
-        }
-        
+        .export-import { margin-top: 20px; }
         .status-bar {
-            text-align: center;
-            padding: 10px;
-            background: #e8f5e9;
-            border-radius: var(--border-radius);
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: var(--primary-color);
+            text-align: center; padding: 10px; background: #e8f5e9;
+            border-radius: var(--border-radius); margin-top: 10px;
+            font-size: 0.9rem; color: var(--primary-color);
         }
-        
         .limits-section {
-            background: #fff8e1;
-            padding: 10px;
-            border-radius: var(--border-radius);
-            margin-top: 10px;
-            font-size: 0.9rem;
+            background: #fff8e1; padding: 10px;
+            border-radius: var(--border-radius); margin-top: 10px; font-size: 0.9rem;
         }
         
-@media (max-width: 768px) {
-
-            
-            .controls {
-                flex-direction: column;
-            }
-            
-button {
-    width: 100%;
-    margin-bottom: 5px;
-}
-
-/* 清空历史按钮 - 终极a标签版（完全不受全局button影响） */
-#clearHistoryBtn {
-    /* 基础样式 */
-    display: inline-block !important;
-    text-decoration: none !important;
-    text-align: center !important;
-    cursor: pointer !important;
-    
-    /* 固定尺寸（电脑端） */
-    width: 70px !important;
-    height: 24px !important;
-    line-height: 24px !important;
-    font-size: 12px !important;
-    
-    /* 红色按钮样式 */
-    background-color: var(--danger-color) !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 4px !important;
-    
-    /* 绝对定位到右上角 */
-    position: absolute !important;
-    right: 0 !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    
-    /* 强制不拉伸 */
-    margin: 0 !important;
-    padding: 0 !important;
-    min-width: unset !important;
-    max-width: unset !important;
-    box-sizing: border-box !important;
-}
-
-/* 手机端缩小 */
-@media (max-width: 768px) {
-    #clearHistoryBtn {
-        width: 60px !important;
-        height: 20px !important;
-        line-height: 20px !important;
-        font-size: 11px !important;
-    }
-}
-
-/* 给标题留按钮位置 */
-.section-title {
-    position: relative !important;
-    padding-right: 80px !important;
-}
-
-
+        /* 清空历史按钮 */
+        #clearHistoryBtn {
+            display: inline-block !important; text-decoration: none !important;
+            text-align: center !important; cursor: pointer !important;
+            width: 70px !important; height: 24px !important; line-height: 24px !important;
+            font-size: 12px !important; background-color: var(--danger-color) !important;
+            color: white !important; border: none !important; border-radius: 4px !important;
+            position: absolute !important; right: 0 !important; top: 50% !important;
+            transform: translateY(-50%) !important; margin: 0 !important; padding: 0 !important;
+            min-width: unset !important; max-width: unset !important; box-sizing: border-box !important;
+        }
+        .section-title { position: relative !important; padding-right: 80px !important; }
+        
+        @media (max-width: 768px) {
+            .controls { flex-direction: column; }
+            button { width: 100%; margin-bottom: 5px; }
+            #clearHistoryBtn { width: 60px !important; height: 20px !important; line-height: 20px !important; font-size: 11px !important; }
+        }
     </style>
 </head>
 <body>
@@ -524,11 +254,8 @@ button {
                     <option value="8" selected>8人</option>
                 </select>
             </div>
-            <div class="players-setup" id="playersSetup">
-                <!-- 玩家输入框将通过JS动态生成 -->
-            </div>
+            <div class="players-setup" id="playersSetup"></div>
             
-            <!-- 分数限制移到设置中心 -->
             <div class="score-limit-setup">
                 <div class="limit-item">
                     <label for="roundLimit">每局最高输分 (0=无限制):</label>
@@ -542,8 +269,10 @@ button {
             
             <div class="controls">
                 <button id="setupBtn">开始游戏</button>
-    <button class="secondary" id="exportBtn">导出数据</button>
-    <button class="secondary" id="importBtn">导入数据</button>
+                <button class="secondary" id="exportBtn">导出数据</button>
+                <button class="secondary" id="importBtn">导入数据</button>
+                <button class="secondary" id="exportCsvBtn">导出CSV</button>
+                <button class="secondary" id="importCsvBtn">导入CSV</button>
                 <button class="danger" id="clearBtn">清空设置</button>
             </div>
         </section>
@@ -551,32 +280,11 @@ button {
         <section class="game-area" id="gameArea" style="display: none;">
             <div class="round-header">
                 <h2 class="section-title">第 <span id="currentRound">1</span> 局</h2>
-                <div>
-                    <button class="secondary" id="undoBtn" disabled>撤销本局</button>
-                </div>
             </div>
             
-            <div class="game-settings">
-                <div class="setting-item">
-                    <label for="bombMultiplier">炸弹倍数:</label>
-                    <select id="bombMultiplier">
-                        <option value="1">1倍 (无炸弹)</option>
-                        <option value="2">2倍 (1副炸弹)</option>
-                        <option value="4">4倍 (2副炸弹)</option>
-                        <option value="8">8倍 (3副炸弹)</option>
-                        <option value="16">16倍 (4副炸弹)</option>
-                        <option value="32">32倍 (5副炸弹)</option>
-                        <option value="64">64倍 (6副炸弹)</option>
-                    </select>
-                </div>
-            </div>
-            
-            <!-- 赢家改为单选框 -->
             <div class="winner-selection">
                 <label class="main-label">本局赢家:</label>
-                <div class="winner-radio-group" id="winnerRadioGroup">
-                    <!-- 玩家单选框将通过JS动态生成 -->
-                </div>
+                <div class="winner-radio-group" id="winnerRadioGroup"></div>
                 <span id="springRuleInfo" style="margin-left: 15px; color: #666; font-size: 0.9rem; display: block; margin-top: 10px;"></span>
             </div>
             
@@ -584,54 +292,50 @@ button {
                 <thead>
                     <tr>
                         <th>玩家</th>
+                        <th>炸弹</th>
                         <th>手牌</th>
                         <th>春天</th>
                         <th>本局</th>
-                        <th>累计</th>
                     </tr>
                 </thead>
-                <tbody id="scoresBody">
-                    <!-- 分数表格内容将通过JS动态生成 -->
-                </tbody>
+                <tbody id="scoresBody"></tbody>
                 <tfoot>
                     <tr class="total-row">
                         <td>总分</td>
-                        <td colspan="2"></td>
+                        <td colspan="3"></td>
                         <td id="roundTotal">0</td>
-                        <td id="grandTotal">0</td>
                     </tr>
                 </tfoot>
             </table>
             
             <div class="limits-section" id="limitsInfo">
-                记分规则：输家按手牌数量计分，非上局赢家5张为春天10分，上局赢家5张按5分计算。所有输分×炸弹倍数后给赢家。输分封顶，赢分不封顶。
+                记分规则：输家手牌分×2^(总炸弹数)，封顶后给赢家。赢分不封顶。
             </div>
             
-            <!-- 重构按钮组 -->
             <div class="controls">
                 <button id="recordRoundBtn">记录本局</button>
                 <button id="newRoundBtn" class="secondary" disabled>打开新一局</button>
+                <button class="secondary" id="undoBtn" disabled>撤销本局</button>
             </div>
             
             <div class="status-bar" id="statusBar">
-                请选择本局赢家，然后选择其他玩家的手牌数量
+                请选择本局赢家，然后选择所有玩家的手牌数量和炸弹数
             </div>
         </section>
 
         <section class="history-section" id="historySection" style="display: none;">
-
-
-<h2 class="section-title">
-    对局历史
-    <a href="javascript:void(0)" class="danger" id="clearHistoryBtn">清空历史</a>
-</h2>
-
+            <h2 class="section-title">
+                对局历史
+                <a href="javascript:void(0)" class="danger" id="clearHistoryBtn">清空历史</a>
+            </h2>
+            <!-- 累计分数表 -->
+            <div id="scoreboardContainer" class="scoreboard-container"></div>
+            
             <div class="export-import">
                 <input type="file" id="importFile" accept=".json" style="display: none;">
+                <input type="file" id="importCsvFile" accept=".csv" style="display: none;">
             </div>
-            <div id="historyContainer">
-                <!-- 历史记录将通过JS动态生成 -->
-            </div>
+            <div id="historyContainer"></div>
         </section>
     </div>
 
@@ -644,7 +348,6 @@ button {
             history: [],
             undoStack: [],
             lastWinner: null,
-            bombMultiplier: 1,
             roundLimit: 0,
             totalLimit: 0,
             isNewRound: false,
@@ -661,10 +364,8 @@ button {
         const currentRoundEl = document.getElementById('currentRound');
         const scoresBody = document.getElementById('scoresBody');
         const roundTotalEl = document.getElementById('roundTotal');
-        const grandTotalEl = document.getElementById('grandTotal');
         const winnerRadioGroup = document.getElementById('winnerRadioGroup');
         const springRuleInfo = document.getElementById('springRuleInfo');
-        const bombMultiplierSelect = document.getElementById('bombMultiplier');
         const roundLimitInput = document.getElementById('roundLimit');
         const totalLimitInput = document.getElementById('totalLimit');
         const recordRoundBtn = document.getElementById('recordRoundBtn');
@@ -673,6 +374,9 @@ button {
         const exportBtn = document.getElementById('exportBtn');
         const importBtn = document.getElementById('importBtn');
         const importFile = document.getElementById('importFile');
+        const exportCsvBtn = document.getElementById('exportCsvBtn');
+        const importCsvBtn = document.getElementById('importCsvBtn');
+        const importCsvFile = document.getElementById('importCsvFile');
         const clearHistoryBtn = document.getElementById('clearHistoryBtn');
         const historyContainer = document.getElementById('historyContainer');
         const statusBar = document.getElementById('statusBar');
@@ -680,116 +384,104 @@ button {
         const setupSection = document.getElementById('setupSection');
         const setupToggle = document.getElementById('setupToggle');
 
-        // 本地存储函数
+        // 本地存储
         function saveGameState() {
             localStorage.setItem('gandengyan_gameState', JSON.stringify(gameState));
         }
-
         function loadGameState() {
-            const savedState = localStorage.getItem('gandengyan_gameState');
-            if (savedState) {
-                try {
-                    const parsedState = JSON.parse(savedState);
-                    Object.assign(gameState, parsedState);
-                    return true;
-                } catch (e) {
-                    console.error('加载游戏状态失败:', e);
-                    return false;
-                }
+            const saved = localStorage.getItem('gandengyan_gameState');
+            if (saved) {
+                try { Object.assign(gameState, JSON.parse(saved)); return true; }
+                catch (e) { console.error('加载状态失败', e); return false; }
             }
             return false;
         }
+        function clearGameState() { localStorage.removeItem('gandengyan_gameState'); }
 
-        function clearGameState() {
-            localStorage.removeItem('gandengyan_gameState');
-        }
-
-        // 初始化 - 生成玩家输入框
+        // 生成玩家输入框
         function initPlayerInputs() {
-            const playerCount = parseInt(playerCountSelect.value);
+            const count = parseInt(playerCountSelect.value);
             playersSetup.innerHTML = '';
-            
-            for (let i = 0; i < playerCount; i++) {
-                const playerDiv = document.createElement('div');
-                playerDiv.className = 'player-input';
-                playerDiv.innerHTML = `
-                    <label>玩家 ${i + 1}:</label>
-                    <input type="text" placeholder="输入名字 (最多4字)" maxlength="4" data-index="${i}">
-                `;
-                playersSetup.appendChild(playerDiv);
+            for (let i = 0; i < count; i++) {
+                const div = document.createElement('div');
+                div.className = 'player-input';
+                div.innerHTML = `<label>玩家 ${i+1}:</label>
+                    <input type="text" placeholder="输入名字 (最多4字)" maxlength="4" data-index="${i}">`;
+                playersSetup.appendChild(div);
             }
         }
 
-        // 更新赢家单选框（默认不选中任何赢家）
+        // 赢家单选框
         function updateWinnerRadio() {
             winnerRadioGroup.innerHTML = '';
             gameState.players.forEach((player, index) => {
-                const radioItem = document.createElement('div');
-                radioItem.className = 'winner-radio-item';
-                // 核心：新开局默认不选中任何赢家，必须手动选择
-                radioItem.innerHTML = `
-                    <input type="radio" name="winner" id="winner-${index}" value="${index}">
-                    <label for="winner-${index}">${player}</label>
-                `;
-                winnerRadioGroup.appendChild(radioItem);
-                
-                const radio = radioItem.querySelector('input');
-                radio.addEventListener('change', () => {
-                    updateSpringRuleInfo();
-                    renderGameArea();
-                });
+                const item = document.createElement('div');
+                item.className = 'winner-radio-item';
+                item.innerHTML = `<input type="radio" name="winner" id="winner-${index}" value="${index}">
+                    <label for="winner-${index}">${player}</label>`;
+                winnerRadioGroup.appendChild(item);
+                item.querySelector('input').addEventListener('change', onWinnerChange);
             });
-            
             updateSpringRuleInfo();
         }
 
-        // 更新春天规则提示
         function updateSpringRuleInfo() {
-            const winnerRadio = document.querySelector('input[name="winner"]:checked');
-            if (!winnerRadio) {
-                springRuleInfo.textContent = '请先选择本局赢家';
-                return;
-            }
-            
-            const winnerIndex = parseInt(winnerRadio.value);
-            const winnerName = gameState.players[winnerIndex];
-            
+            const radio = document.querySelector('input[name="winner"]:checked');
+            if (!radio) { springRuleInfo.textContent = '请先选择本局赢家'; return; }
+            const idx = parseInt(radio.value);
+            const name = gameState.players[idx];
             if (gameState.currentRound === 1) {
                 springRuleInfo.textContent = `第一局：所有输家5张手牌算春天10分`;
-            } else if (winnerIndex === gameState.lastWinner) {
-                springRuleInfo.textContent = `${winnerName}上一局也赢了：其他输家5张算春天10分，${winnerName}不可能被春天`;
+            } else if (idx === gameState.lastWinner) {
+                springRuleInfo.textContent = `${name}上一局也赢了：其他输家5张算春天10分，${name}不可能被春天`;
             } else {
-                springRuleInfo.textContent = `${winnerName}上一局没赢：所有输家5张算春天10分`;
+                springRuleInfo.textContent = `${name}上一局没赢：所有输家5张算春天10分`;
             }
+        }
+
+        function onWinnerChange() {
+            // 如果本局已经记录，不允许修改
+            if (gameState.isRoundRecorded) return;
+
+            updateSpringRuleInfo();
+
+            const winnerRadio = document.querySelector('input[name="winner"]:checked');
+            if (!winnerRadio) return;
+            const winnerIndex = parseInt(winnerRadio.value);
+
+            // 只处理手牌列
+            document.querySelectorAll('.card-count').forEach(select => {
+                const idx = parseInt(select.dataset.index);
+                if (idx === winnerIndex) {
+                    select.value = '0';      // 强制清0
+                    select.disabled = true;  // 锁定
+                } else {
+                    select.disabled = false; // 其他玩家恢复可选（保持原值）
+                }
+            });
+
+            // 炸弹列保持所有可选（除非已记录）
+            document.querySelectorAll('.bomb-count').forEach(select => {
+                select.disabled = gameState.isRoundRecorded; // 记录时为true，否则false
+            });
+
+            calculateCurrentRound();  // 重新计算并显示分数
+            updateButtonStates();
         }
 
         // 设置玩家
         function setupPlayers() {
-            const playerCount = parseInt(playerCountSelect.value);
+            const count = parseInt(playerCountSelect.value);
             const inputs = document.querySelectorAll('#playersSetup input');
-            const playerNames = Array.from(inputs)
-                .map(input => input.value.trim())
-                .filter(name => name !== '');
+            const names = Array.from(inputs).map(inp => inp.value.trim()).filter(n => n);
+            if (names.length < count) { alert(`请设置满 ${count} 个玩家名字！`); return; }
+            if (names.length > count) { alert(`只能设置 ${count} 个玩家！`); return; }
+            if (!validatePlayerNames(names)) return;
 
-            if (playerNames.length < playerCount) {
-                alert(`请设置满 ${playerCount} 个玩家名字！`);
-                return;
-            }
-
-            if (playerNames.length > playerCount) {
-                alert(`只能设置 ${playerCount} 个玩家！`);
-                return;
-            }
-
-            if (!validatePlayerNames(playerNames)) {
-                return;
-            }
-
-            if (gameState.players.length > 0) {
+            if (gameState.players.length > 0)
                 gameState.undoStack.push(JSON.parse(JSON.stringify(gameState)));
-            }
 
-            gameState.players = playerNames;
+            gameState.players = names;
             gameState.rounds = [];
             gameState.currentRound = 1;
             gameState.history = [];
@@ -797,11 +489,6 @@ button {
             gameState.lastWinner = null;
             gameState.isNewRound = false;
             gameState.isRoundRecorded = false;
-            
-            // 炸弹倍数默认1倍，无需手动选择
-            gameState.bombMultiplier = 1;
-            bombMultiplierSelect.value = '1';
-
             gameState.roundLimit = parseInt(roundLimitInput.value) || 0;
             gameState.totalLimit = parseInt(totalLimitInput.value) || 0;
             roundLimitInput.disabled = true;
@@ -811,467 +498,450 @@ button {
             renderGameArea();
             gameArea.style.display = 'block';
             historySection.style.display = 'block';
-
             setupSection.classList.add('collapsed');
             setupToggle.textContent = '点击展开';
-            
             saveGameState();
-            updateStatusBar(`已设置 ${playerCount} 个玩家，开始第1局`);
+            updateStatusBar(`已设置 ${count} 个玩家，开始第1局`);
         }
 
-        // 验证玩家名字
         function validatePlayerNames(names) {
-            const uniqueNames = new Set(names);
-            if (uniqueNames.size !== names.length) {
-                alert('玩家名字不能重复！');
-                return false;
-            }
-
-            for (const name of names) {
-                if (name.length > 4) {
-                    alert(`玩家名字 "${name}" 超过4个字限制！`);
-                    return false;
-                }
-            }
-
+            if (new Set(names).size !== names.length) { alert('玩家名字不能重复！'); return false; }
+            for (const n of names) if (n.length > 4) { alert(`名字"${n}"超过4字`); return false; }
             return true;
         }
 
-        // 渲染游戏区域
+        // 渲染游戏表格
         function renderGameArea() {
             scoresBody.innerHTML = '';
-            let grandTotal = 0;
-
             const winnerRadio = document.querySelector('input[name="winner"]:checked');
             const winnerIndex = winnerRadio ? parseInt(winnerRadio.value) : -1;
 
             gameState.players.forEach((player, index) => {
                 const row = document.createElement('tr');
-                
-                let playerTotal = 0;
-                gameState.rounds.forEach(round => {
-                    const playerScores = round.scores.find(s => s.playerIndex === index);
-                    if (playerScores) {
-                        playerTotal += playerScores.finalScore;
-                    }
-                });
+                row.setAttribute('data-player-index', index);
 
-                grandTotal += playerTotal;
-
-                // 所有玩家手牌数统一为0-5张
-                let cardSelectOptions = '';
+                let cardOpts = '';
                 for (let i = 0; i <= 5; i++) {
-                    // 赢家默认0，其他玩家默认0，都需要手动选择
-                    const selected = (index === winnerIndex) ? (i === 0 ? 'selected' : '') : (i === 0 ? 'selected' : '');
-                    cardSelectOptions += `<option value="${i}" ${selected}>${i}</option>`;
+                    const sel = (i === 0) ? 'selected' : '';
+                    cardOpts += `<option value="${i}" ${sel}>${i}</option>`;
                 }
 
-                // 给行添加data-index属性，方便后续定位
-                row.setAttribute('data-player-index', index);
                 row.innerHTML = `
                     <td><strong>${player}</strong></td>
                     <td>
-                        <select class="card-count" data-index="${index}" ${index === winnerIndex || gameState.isRoundRecorded ? 'disabled' : ''}>
-                            ${cardSelectOptions}
+                        <select class="bomb-count" data-index="${index}" ${gameState.isRoundRecorded ? 'disabled' : ''}>
+                            <option value="0">0</option><option value="1">1</option><option value="2">2</option>
+                            <option value="3">3</option><option value="4">4</option>
                         </select>
                     </td>
+                    <td>
+                        <select class="card-count" data-index="${index}" ${index === winnerIndex ? 'disabled' : (gameState.isRoundRecorded ? 'disabled' : '')}>
+                            ${cardOpts}
+                        </select>
+                    </td>
+                    
                     <td class="spring-status" data-index="${index}">-</td>
-                    <td data-score-index="${index}">${index === winnerIndex ? '待计算' : '待计算'}</td>
-                    <td>${playerTotal}</td>
+                    <td data-score-index="${index}">待计算</td>
                 `;
                 scoresBody.appendChild(row);
             });
 
             roundTotalEl.textContent = 0;
-            grandTotalEl.textContent = grandTotal;
             currentRoundEl.textContent = gameState.currentRound;
-            
-            // 同步炸弹倍数下拉框
-            bombMultiplierSelect.value = gameState.bombMultiplier.toString();
-            
             updateLimitsInfo();
             updateButtonStates();
-            
-            // 渲染后立即计算一次初始分数
-            if (winnerIndex !== -1) {
-                calculateCurrentRound();
-            }
+            if (winnerIndex !== -1) calculateCurrentRound();
         }
 
+        function updateButtonStates() {
+            recordRoundBtn.disabled = gameState.isRoundRecorded;
+            undoBtn.disabled = !gameState.isRoundRecorded || gameState.isNewRound || gameState.undoStack.length === 0;
+            newRoundBtn.disabled = !gameState.isRoundRecorded;
 
-// 统一更新所有按钮状态（你的三重保险逻辑）
-function updateButtonStates() {
-    const winnerSelected = document.querySelector('input[name="winner"]:checked') !== null;
-
-    // ======================
-    // 你的核心互斥逻辑
-    // ======================
-    // 1. 未记录：记录可用，撤销禁用，新开禁用
-    // 2. 已记录：记录禁用，撤销可用，新开可用
-    // 3. 已新开：记录可用，撤销禁用，新开禁用
-    recordRoundBtn.disabled = gameState.isRoundRecorded;
-    undoBtn.disabled = !gameState.isRoundRecorded || gameState.isNewRound || gameState.undoStack.length === 0;
-    newRoundBtn.disabled = !gameState.isRoundRecorded;
-
-    // 输入控件状态
-    const winnerRadio = document.querySelector('input[name="winner"]:checked');
-    const winnerIndex = winnerRadio ? parseInt(winnerRadio.value) : -1;
-    
-    document.querySelectorAll('input[name="winner"]').forEach(radio => {
-        radio.disabled = gameState.isRoundRecorded;
-    });
-    bombMultiplierSelect.disabled = gameState.isRoundRecorded;
-    document.querySelectorAll('.card-count').forEach(select => {
-        if (gameState.isRoundRecorded) {
-            select.disabled = true;
-        } else {
-            select.disabled = parseInt(select.dataset.index) === winnerIndex;
+            const radios = document.querySelectorAll('input[name="winner"]');
+            radios.forEach(r => r.disabled = gameState.isRoundRecorded);
+            document.querySelectorAll('.card-count').forEach(sel => {
+                sel.disabled = gameState.isRoundRecorded ? true : parseInt(sel.dataset.index) === (document.querySelector('input[name="winner"]:checked')?.value ?? -1);
+            });
+            document.querySelectorAll('.bomb-count').forEach(sel => {
+                sel.disabled = gameState.isRoundRecorded;
+            });
         }
-    });
-}
 
-
-        // 更新限制信息显示
         function updateLimitsInfo() {
-            let infoText = '记分规则：';
-            infoText += `炸弹倍数: ${gameState.bombMultiplier}倍`;
-            
-            if (gameState.roundLimit > 0) {
-                infoText += `，每局最高输分: ${gameState.roundLimit}分`;
-            }
-            
-            if (gameState.totalLimit > 0) {
-                infoText += `，活动最高输分: ${gameState.totalLimit}分`;
-            }
-            
-            infoText += '。输家按手牌数量计分，非上局赢家5张为春天10分，上局赢家5张按5分计算。所有输分×炸弹倍数后给赢家。输分封顶，赢分不封顶。';
-            
-            limitsInfo.textContent = infoText;
+            let txt = '记分规则：输家手牌分 × 2^(总炸弹数)';
+            if (gameState.roundLimit > 0) txt += `，每局最高输分${gameState.roundLimit}分`;
+            if (gameState.totalLimit > 0) txt += `，活动最高输分${gameState.totalLimit}分`;
+            txt += '。赢分不封顶。';
+            limitsInfo.textContent = txt;
         }
 
-        // 计算本局分数（彻底修复：封顶玩家成为赢家时的计算问题）
+        // 计算本局（使用全局总炸弹倍数）
         function calculateCurrentRound() {
             const winnerRadio = document.querySelector('input[name="winner"]:checked');
-            if (!winnerRadio) {
-                return null;
-            }
+            if (!winnerRadio) return null;
             const winnerIndex = parseInt(winnerRadio.value);
-            
-            const bombMultiplier = parseInt(bombMultiplierSelect.value);
+
+            // 计算总炸弹倍数
+            let totalBombCount = 0;
+            gameState.players.forEach((_, i) => {
+                const sel = document.querySelector(`.bomb-count[data-index="${i}"]`);
+                if (sel) totalBombCount += parseInt(sel.value) || 0;
+            });
+            const bombMultiplier = Math.pow(2, totalBombCount);
+
             const roundLimit = gameState.roundLimit;
             const totalLimit = gameState.totalLimit;
-            
             let totalLoserScore = 0;
             const loserScores = [];
-            
-            // 先计算所有输家的分数
+
             gameState.players.forEach((player, index) => {
-                if (index === winnerIndex) return; // 跳过赢家
-                
-                const cardSelect = document.querySelector(`.card-count[data-index="${index}"]`);
-                const cardCount = parseInt(cardSelect.value) || 0;
-                const cellSpring = document.querySelector(`.spring-status[data-index="${index}"]`);
-                const cellScore = document.querySelector(`td[data-score-index="${index}"]`);
-                
-                let score = 0;
-                let isSpring = false;
+                if (index === winnerIndex) return;
+
+                const cardSel = document.querySelector(`.card-count[data-index="${index}"]`);
+                const cardCount = parseInt(cardSel.value) || 0;
                 const isLastWinner = index === gameState.lastWinner;
-                
-                // 春天逻辑保持不变
-                if (!isLastWinner && cardCount === 5) {
-                    score = 10;
-                    isSpring = true;
-                } else if (isLastWinner && cardCount === 5) {
-                    // 上局赢家5张牌，按5分计算，不是春天
-                    score = 5;
-                } else if (cardCount >= 1 && cardCount <= 4) {
-                    score = cardCount;
+                let baseScore = 0;
+                let isSpring = false;
+
+                if (!isLastWinner && cardCount === 5) { baseScore = 10; isSpring = true; }
+                else if (isLastWinner && cardCount === 5) baseScore = 5;
+                else if (cardCount >= 1 && cardCount <= 4) baseScore = cardCount;
+
+                let score = baseScore * bombMultiplier;
+
+                if (roundLimit > 0 && score > roundLimit) score = roundLimit;
+
+                if (totalLimit > 0) {
+                    let currentTotal = 0;
+                    gameState.rounds.forEach(r => {
+                        const s = r.scores.find(s => s.playerIndex === index);
+                        if (s) currentTotal += s.finalScore;
+                    });
+                    if (currentTotal < 0) {
+                        const loss = Math.abs(currentTotal);
+                        if (loss >= totalLimit) score = 0;
+                        else score = Math.min(score, totalLimit - loss);
+                    }
                 }
-                
-                // 应用炸弹倍数
-                score = score * bombMultiplier;
-                
-                // 应用每局限制
-                if (roundLimit > 0 && score > roundLimit) {
-                    score = roundLimit;
-                }
-                
 
-// 应用总限制（仅输分封顶，赢分不封顶 ✅ 最终修复）
-if (totalLimit > 0) {
-    let currentTotal = 0;
-    gameState.rounds.forEach(round => {
-        const playerScore = round.scores.find(s => s.playerIndex === index);
-        if (playerScore) currentTotal += playerScore.finalScore;
-    });
-    
-    // 只有【总分负数=输分】的玩家才封顶
-    // 【总分正数=赢分】的玩家，正常输分，不封顶
-    if (currentTotal < 0) {
-        const currentLoss = Math.abs(currentTotal);
-        if (currentLoss >= totalLimit) {
-            score = 0;
-        } else {
-            const remainingLoss = totalLimit - currentLoss;
-            score = Math.min(score, remainingLoss);
-        }
-    }
-}
-
-
-                
                 totalLoserScore += score;
                 loserScores.push({
                     playerIndex: index,
-                    cardCount: cardCount,
-                    baseScore: score / bombMultiplier,
+                    cardCount,
+                    bombCount: parseInt(document.querySelector(`.bomb-count[data-index="${index}"]`).value) || 0,
+                    baseScore,
                     finalScore: score,
-                    isSpring: isSpring
+                    isSpring
                 });
-                
-                // 更新输家分数显示
-                cellSpring.textContent = isSpring ? '春天' : '-';
-                cellSpring.className = isSpring ? 'spring-status spring-marker' : 'spring-status';
-                cellScore.textContent = `-${score}`;
-                cellScore.className = 'loser-score';
+
+                const springCell = document.querySelector(`.spring-status[data-index="${index}"]`);
+                const scoreCell = document.querySelector(`td[data-score-index="${index}"]`);
+                springCell.textContent = isSpring ? '春天' : '-';
+                springCell.className = isSpring ? 'spring-status spring-marker' : 'spring-status';
+                scoreCell.textContent = `-${score}`;
+                scoreCell.className = 'loser-score';
             });
-            
-            // 核心修复：使用data-score-index属性准确定位赢家分数单元格
-            // 无论赢家是谁，无论他之前输了多少分，都能正确显示
-            const winnerScoreCell = document.querySelector(`td[data-score-index="${winnerIndex}"]`);
-            winnerScoreCell.textContent = `+${totalLoserScore}`;
-            winnerScoreCell.className = 'winner-score';
-            
+
+            const winnerCell = document.querySelector(`td[data-score-index="${winnerIndex}"]`);
+            winnerCell.textContent = `+${totalLoserScore}`;
+            winnerCell.className = 'winner-score';
             roundTotalEl.textContent = 0;
-            
+
             return {
-                winnerIndex: winnerIndex,
-                loserScores: loserScores,
+                winnerIndex,
+                loserScores,
                 totalWinnerScore: totalLoserScore,
-                bombMultiplier: bombMultiplier,
-                roundLimit: roundLimit,
-                totalLimit: totalLimit
+                totalBombCount,
+                bombMultiplier
             };
         }
 
+        // 记录本局
+        function recordCurrentRound() {
+            if (gameState.isRoundRecorded) { alert('本局已记录！'); return; }
+            const calc = calculateCurrentRound();
+            if (!calc) { alert('分数计算失败'); return; }
 
+            gameState.undoStack = [];
+            gameState.undoStack.push(JSON.parse(JSON.stringify(gameState)));
 
+            const roundRecord = {
+                roundNumber: gameState.currentRound,
+                winnerIndex: calc.winnerIndex,
+                winnerName: gameState.players[calc.winnerIndex],
+                scores: calc.loserScores.map(l => ({
+                    playerIndex: l.playerIndex,
+                    playerName: gameState.players[l.playerIndex],
+                    cardCount: l.cardCount,
+                    bombCount: l.bombCount,
+                    baseScore: l.baseScore,
+                    finalScore: -l.finalScore,
+                    isSpring: l.isSpring
+                })),
+                winnerScore: {
+                    playerIndex: calc.winnerIndex,
+                    playerName: gameState.players[calc.winnerIndex],
+                    cardCount: 0,
+                    bombCount: parseInt(document.querySelector(`.bomb-count[data-index="${calc.winnerIndex}"]`).value) || 0,
+                    finalScore: calc.totalWinnerScore
+                },
+                totalBombCount: calc.totalBombCount,
+                bombMultiplier: calc.bombMultiplier,
+                timestamp: new Date().toISOString()
+            };
+            // 补充赢家分值到scores（便于统计）
+            roundRecord.scores.push({
+                playerIndex: calc.winnerIndex,
+                playerName: gameState.players[calc.winnerIndex],
+                cardCount: 0,
+                bombCount: roundRecord.winnerScore.bombCount,
+                baseScore: calc.totalWinnerScore,
+                finalScore: calc.totalWinnerScore,
+                isSpring: false,
+                isWinner: true
+            });
 
-function recordCurrentRound() {
-    if (gameState.isRoundRecorded) {
-        alert('本局已记录！');
-        return;
-    }
-    const winnerRadio = document.querySelector('input[name="winner"]:checked');
-    if (!winnerRadio) {
-        alert('请先选择本局赢家！');
-        return;
-    }
-    const calculation = calculateCurrentRound();
-    if (!calculation) {
-        alert('分数计算失败！');
-        return;
-    }
+            gameState.rounds.push(roundRecord);
+            gameState.lastWinner = calc.winnerIndex;
+            gameState.isRoundRecorded = true;
+            gameState.isNewRound = false;
 
-    // ✅ 修复1：记录前强制保存状态（深拷贝）
-    gameState.undoStack = []; // 先清空旧栈，避免重复
-    gameState.undoStack.push(JSON.parse(JSON.stringify(gameState)));
+            gameState.history.push({
+                roundNumber: gameState.currentRound,
+                winner: gameState.players[calc.winnerIndex],
+                losers: calc.loserScores.map(l => ({
+                    name: gameState.players[l.playerIndex],
+                    cardCount: l.cardCount,
+                    score: l.finalScore,
+                    isSpring: l.isSpring
+                })),
+                totalScore: calc.totalWinnerScore,
+                totalBombCount: calc.totalBombCount,
+                bombCounts: gameState.players.map((name, i) => ({
+                    name,
+                    bombCount: parseInt(document.querySelector(`.bomb-count[data-index="${i}"]`).value) || 0
+                })),
+                timestamp: new Date().toLocaleString()
+            });
 
-    // 下方原有数据代码不动，直接保留...
-    const roundRecord = {
-        roundNumber: gameState.currentRound,
-        winnerIndex: calculation.winnerIndex,
-        winnerName: gameState.players[calculation.winnerIndex],
-        scores: calculation.loserScores.map(loser => ({
-            playerIndex: loser.playerIndex,
-            playerName: gameState.players[loser.playerIndex],
-            cardCount: loser.cardCount,
-            baseScore: loser.baseScore,
-            finalScore: -loser.finalScore,
-            isSpring: loser.isSpring
-        })),
-        winnerScore: {
-            playerIndex: calculation.winnerIndex,
-            playerName: gameState.players[calculation.winnerIndex],
-            finalScore: calculation.totalWinnerScore
-        },
-        bombMultiplier: calculation.bombMultiplier,
-        roundLimit: calculation.roundLimit,
-        totalLimit: calculation.totalLimit,
-        timestamp: new Date().toISOString()
-    };
-    roundRecord.scores.push({
-        playerIndex: calculation.winnerIndex,
-        playerName: gameState.players[calculation.winnerIndex],
-        cardCount: 0,
-        baseScore: calculation.totalWinnerScore,
-        finalScore: calculation.totalWinnerScore,
-        isSpring: false,
-        isWinner: true
-    });
-    gameState.rounds.push(roundRecord);
-    gameState.lastWinner = calculation.winnerIndex;
-    gameState.bombMultiplier = calculation.bombMultiplier;
-    gameState.isRoundRecorded = true;
-    // ✅ 修复2：记录后 必须重置isNewRound=false（核心！）
-    gameState.isNewRound = false;
+            saveGameState();
+            updateButtonStates();
+            renderGameArea();
+            renderHistory();
+            updateStatusBar(`第 ${gameState.currentRound} 局记录成功`);
+        }
 
-    // 历史代码不动...
-    const historyRecord = {
-        roundNumber: gameState.currentRound,
-        winner: gameState.players[calculation.winnerIndex],
-        losers: calculation.loserScores.map(loser => ({
-            name: gameState.players[loser.playerIndex],
-            cardCount: loser.cardCount,
-            score: loser.finalScore,
-            isSpring: loser.isSpring
-        })),
-        totalScore: calculation.totalWinnerScore,
-        bombMultiplier: calculation.bombMultiplier,
-        timestamp: new Date().toLocaleString()
-    };
-    gameState.history.push(historyRecord);
+        // 新局
+        function openNewRound() {
+            if (!gameState.isRoundRecorded) { alert('请先记录本局！'); return; }
+            gameState.undoStack = [];
+            gameState.isNewRound = true;
+            gameState.currentRound++;
+            gameState.isRoundRecorded = false;
+            updateWinnerRadio();
+            renderGameArea();
+            saveGameState();
+            updateButtonStates();
+            updateStatusBar(`开始第 ${gameState.currentRound} 局`);
+        }
 
-    saveGameState();
-    updateButtonStates(); // ✅ 强制刷新按钮
-    renderGameArea();
-    renderHistory();
-    updateStatusBar(`第 ${gameState.currentRound} 局记录成功`);
-}
-
-
-
-
-// 打开新一局（修复：新开后清空撤销，无法撤销上一局）
-function openNewRound() {
-    if (!gameState.isRoundRecorded) {
-        alert('请先记录本局！');
-        return;
-    }
-    // ✅ 修复3：新开后 清空栈+标记isNewRound（彻底锁死撤销）
-    gameState.undoStack = [];
-    gameState.isNewRound = true;
-    gameState.currentRound++;
-    gameState.isRoundRecorded = false;
-    gameState.bombMultiplier = 1;
-    bombMultiplierSelect.value = '1';
-
-    updateWinnerRadio();
-    renderGameArea();
-    saveGameState();
-    updateButtonStates();
-    updateStatusBar(`开始第 ${gameState.currentRound} 局`);
-}
-
-
-// 撤销上一局（修复：完整回滚所有状态）
-function undoLastRound() {
-    // 严格判断：无撤销记录 / 未记录 / 已新开 → 不能撤销
-    if (gameState.undoStack.length === 0 || !gameState.isRoundRecorded || gameState.isNewRound) {
-        alert('无法撤销！');
-        return;
-    }
-
-    // ✅ 核心：回滚完整游戏状态
-    const previousState = gameState.undoStack.pop();
-    Object.assign(gameState, previousState);
-
-    // 同步界面控件
-    bombMultiplierSelect.value = gameState.bombMultiplier.toString();
-    updateWinnerRadio();
-    renderGameArea();
-    renderHistory();
-    
-    saveGameState();
-    updateButtonStates(); // ✅ 刷新按钮
-    updateStatusBar(`已撤销第 ${gameState.currentRound} 局`);
-}
-
-        // 导出数据
-        function exportData() {
-            if (gameState.players.length === 0) {
-                alert('没有数据可导出！');
-                return;
+        // 撤销
+        function undoLastRound() {
+            if (gameState.undoStack.length === 0 || !gameState.isRoundRecorded || gameState.isNewRound) {
+                alert('无法撤销！'); return;
             }
+            const prev = gameState.undoStack.pop();
+            Object.assign(gameState, prev);
+            updateWinnerRadio();
+            renderGameArea();
+            renderHistory();
+            saveGameState();
+            updateButtonStates();
+            updateStatusBar(`已撤销第 ${gameState.currentRound} 局`);
+        }
 
-            const exportData = {
+        // 导出/导入JSON
+        function exportData() {
+            if (gameState.players.length === 0) { alert('没有数据可导出！'); return; }
+            const data = {
                 gameType: '干瞪眼记分',
                 players: gameState.players,
                 rounds: gameState.rounds,
                 history: gameState.history,
                 currentRound: gameState.currentRound,
                 lastWinner: gameState.lastWinner,
-                bombMultiplier: gameState.bombMultiplier,
                 roundLimit: gameState.roundLimit,
                 totalLimit: gameState.totalLimit,
                 exportTime: new Date().toISOString()
             };
-
-            const dataStr = JSON.stringify(exportData, null, 2);
-            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-            
-            const exportFileDefaultName = `干瞪眼记分_${new Date().toISOString().split('T')[0]}.json`;
-            
-            const linkElement = document.createElement('a');
-            linkElement.setAttribute('href', dataUri);
-            linkElement.setAttribute('download', exportFileDefaultName);
-            linkElement.click();
-            
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `干瞪眼记分_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
             updateStatusBar('数据导出成功！');
         }
 
-        // 导入数据
         function importData(event) {
             const file = event.target.files[0];
             if (!file) return;
-            
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = e => {
                 try {
-                    const importedData = JSON.parse(e.target.result);
-                    
-                    if (!importedData.players || !importedData.rounds) {
-                        throw new Error('无效的数据格式');
-                    }
-
-                    if (gameState.players.length > 0) {
-                        gameState.undoStack.push(JSON.parse(JSON.stringify(gameState)));
-                    }
-
-                    gameState.players = importedData.players;
-                    gameState.rounds = importedData.rounds || [];
-                    gameState.history = importedData.history || [];
-                    gameState.currentRound = importedData.currentRound || gameState.rounds.length + 1;
-                    gameState.lastWinner = importedData.lastWinner || null;
-                    gameState.bombMultiplier = importedData.bombMultiplier || 1;
-                    gameState.roundLimit = importedData.roundLimit || 0;
-                    gameState.totalLimit = importedData.totalLimit || 0;
-                    gameState.isNewRound = false;
-                    gameState.isRoundRecorded = false;
-                    
+                    const data = JSON.parse(e.target.result);
+                    if (!data.players || !data.rounds) throw new Error('无效数据');
+                    if (gameState.players.length > 0) gameState.undoStack.push(JSON.parse(JSON.stringify(gameState)));
+                    Object.assign(gameState, {
+                        players: data.players,
+                        rounds: data.rounds,
+                        history: data.history || [],
+                        currentRound: data.currentRound || data.rounds.length + 1,
+                        lastWinner: data.lastWinner ?? null,
+                        roundLimit: data.roundLimit || 0,
+                        totalLimit: data.totalLimit || 0,
+                        isNewRound: false,
+                        isRoundRecorded: false,
+                        undoStack: []
+                    });
                     roundLimitInput.value = gameState.roundLimit;
                     totalLimitInput.value = gameState.totalLimit;
                     roundLimitInput.disabled = true;
                     totalLimitInput.disabled = true;
-                    
-                    // 导入数据后同步炸弹倍数下拉框
-                    bombMultiplierSelect.value = gameState.bombMultiplier.toString();
-                    
                     updateWinnerRadio();
                     renderGameArea();
                     renderHistory();
-                    
                     gameArea.style.display = 'block';
                     historySection.style.display = 'block';
                     setupSection.classList.add('collapsed');
                     setupToggle.textContent = '点击展开';
-                    
                     saveGameState();
-                    updateStatusBar(`数据导入成功！共 ${gameState.rounds.length} 局`);
-                    
-                } catch (error) {
-                    alert(`导入失败：${error.message}`);
-                }
+                    updateStatusBar(`导入成功，共${gameState.rounds.length}局`);
+                } catch (err) { alert('导入失败：' + err.message); }
+            };
+            reader.readAsText(file);
+        }
+
+        // 导出/导入CSV（适配新炸弹）
+        function exportCsv() {
+            if (gameState.players.length === 0 || gameState.rounds.length === 0) {
+                alert('没有对局数据可导出CSV！'); return;
+            }
+            let csv = `#Players,` + gameState.players.join(',') + '\n';
+            csv += `#RoundLimit,${gameState.roundLimit}\n#TotalLimit,${gameState.totalLimit}\n`;
+            csv += `RoundNumber,Winner,Player,CardCount,BombCount,IsSpring,FinalScore,Timestamp\n`;
+            gameState.rounds.forEach(round => {
+                // 赢家
+                csv += `${round.roundNumber},${round.winnerName},${round.winnerName},0,${round.winnerScore.bombCount},false,${round.winnerScore.finalScore},${round.timestamp}\n`;
+                round.scores.forEach(s => {
+                    if (s.isWinner) return;
+                    csv += `${round.roundNumber},${round.winnerName},${s.playerName},${s.cardCount},${s.bombCount},${s.isSpring},${s.finalScore},${round.timestamp}\n`;
+                });
+            });
+            const blob = new Blob([csv], {type: 'text/csv'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `干瞪眼记分_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            updateStatusBar('CSV导出成功！');
+        }
+
+        function importCsv(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                try {
+                    const lines = e.target.result.split(/\r?\n/).filter(l => l.trim());
+                    if (lines.length < 4) throw new Error('文件内容不足');
+                    let players = [], roundLimit = 0, totalLimit = 0, dataIdx = 0;
+                    for (let i = 0; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (line.startsWith('#Players,')) players = line.substring(9).split(',').map(s => s.trim()).filter(s => s);
+                        else if (line.startsWith('#RoundLimit,')) roundLimit = parseInt(line.substring(12)) || 0;
+                        else if (line.startsWith('#TotalLimit,')) totalLimit = parseInt(line.substring(12)) || 0;
+                        else if (line.startsWith('RoundNumber,')) { dataIdx = i+1; break; }
+                    }
+                    if (!players.length) throw new Error('未找到玩家');
+                    const roundsMap = new Map();
+                    for (let i = dataIdx; i < lines.length; i++) {
+                        const cols = lines[i].split(',');
+                        if (cols.length < 8) continue;
+                        const [rn, winner, player, cc, bc, isSpr, fs, ts] = cols;
+                        const roundNum = parseInt(rn);
+                        if (!roundsMap.has(roundNum)) {
+                            roundsMap.set(roundNum, {
+                                roundNumber: roundNum,
+                                winnerName: winner,
+                                winnerIndex: players.indexOf(winner),
+                                scores: [],
+                                totalBombCount: 0,
+                                winnerScore: null,
+                                timestamp: ts
+                            });
+                        }
+                        const round = roundsMap.get(roundNum);
+                        const finalScore = parseFloat(fs);
+                        if (player === winner && finalScore > 0) {
+                            round.winnerScore = {
+                                playerIndex: players.indexOf(winner),
+                                playerName: winner,
+                                cardCount: 0,
+                                bombCount: parseInt(bc) || 0,
+                                finalScore
+                            };
+                            round.totalBombCount += parseInt(bc) || 0;
+                        } else {
+                            round.scores.push({
+                                playerIndex: players.indexOf(player),
+                                playerName: player,
+                                cardCount: parseInt(cc),
+                                bombCount: parseInt(bc) || 0,
+                                baseScore: Math.abs(finalScore) / Math.pow(2, round.totalBombCount || 1), // 近似
+                                finalScore,
+                                isSpring: isSpr === 'true'
+                            });
+                            round.totalBombCount += parseInt(bc) || 0;
+                        }
+                    }
+                    const newRounds = Array.from(roundsMap.values()).sort((a,b) => a.roundNumber - b.roundNumber);
+                    if (!newRounds.length) throw new Error('未解析到对局');
+                    gameState.players = players;
+                    gameState.rounds = newRounds;
+                    gameState.roundLimit = roundLimit;
+                    gameState.totalLimit = totalLimit;
+                    gameState.currentRound = newRounds.length + 1;
+                    gameState.lastWinner = newRounds[newRounds.length-1].winnerIndex;
+                    gameState.isNewRound = false;
+                    gameState.isRoundRecorded = false;
+                    gameState.undoStack = [];
+                    gameState.history = newRounds.map(r => ({
+                        roundNumber: r.roundNumber,
+                        winner: r.winnerName,
+                        losers: r.scores.filter(s => !s.isWinner).map(s => ({
+                            name: s.playerName,
+                            cardCount: s.cardCount,
+                            score: Math.abs(s.finalScore),
+                            isSpring: s.isSpring
+                        })),
+                        totalScore: r.winnerScore ? r.winnerScore.finalScore : 0,
+                        totalBombCount: r.totalBombCount,
+                        timestamp: new Date(r.timestamp).toLocaleString()
+                    }));
+                    roundLimitInput.value = gameState.roundLimit;
+                    totalLimitInput.value = gameState.totalLimit;
+                    roundLimitInput.disabled = true;
+                    totalLimitInput.disabled = true;
+                    updateWinnerRadio();
+                    renderGameArea();
+                    renderHistory();
+                    gameArea.style.display = 'block';
+                    historySection.style.display = 'block';
+                    setupSection.classList.add('collapsed');
+                    setupToggle.textContent = '点击展开';
+                    saveGameState();
+                    updateStatusBar(`CSV导入成功，共${newRounds.length}局`);
+                } catch (err) { alert('CSV导入失败：' + err.message); }
             };
             reader.readAsText(file);
         }
@@ -1279,110 +949,98 @@ function undoLastRound() {
         // 渲染历史记录
         function renderHistory() {
             historyContainer.innerHTML = '';
-            
-            if (gameState.history.length === 0) {
-                historyContainer.innerHTML = '<p style="text-align:center; color:#666;">暂无对局记录</p>';
-                return;
-            }
-            
-            const reversedHistory = [...gameState.history].reverse();
-            
-            reversedHistory.forEach(record => {
-                const roundItem = document.createElement('div');
-                roundItem.className = 'round-item';
-                
-                let loserHtml = '';
-                record.losers.forEach(loser => {
-                    loserHtml += `<span class="player-score loser-score">${loser.name}: ${loser.cardCount}张 ${loser.isSpring ? '<span class="spring-marker">春天</span>' : ''} (-${loser.score})</span>`;
+            if (!gameState.history.length) {
+                historyContainer.innerHTML = '<p style="text-align:center;color:#666;">暂无对局记录</p>';
+            } else {
+                [...gameState.history].reverse().forEach(rec => {
+                    const div = document.createElement('div');
+                    div.className = 'round-item';
+                    let loserHtml = '';
+                    rec.losers.forEach(l => {
+                        loserHtml += `<span class="player-score loser-score">${l.name}: ${l.cardCount}张 ${l.isSpring?'<span class="spring-marker">春天</span>':''} (-${l.score})</span>`;
+                    });
+                    div.innerHTML = `
+                        <div class="round-title">第 ${rec.roundNumber} 局 · ${rec.timestamp}</div>
+                        <div class="round-details">
+                            <span class="player-score winner-score">赢家: ${rec.winner} (+${rec.totalScore})</span>
+                            ${loserHtml}
+                            ${rec.bombCounts ? rec.bombCounts.map(b => `<span class="player-score" style="background:#fff3e0;">${b.name}: ${b.bombCount}炸</span>`).join('') : `<span class="player-score">总炸弹: ${rec.totalBombCount}</span>`}
+                        </div>`;
+                    historyContainer.appendChild(div);
                 });
-                
-                roundItem.innerHTML = `
-                    <div class="round-title">第 ${record.roundNumber} 局 · ${record.timestamp}</div>
-                    <div class="round-details">
-                        <span class="player-score winner-score">赢家: ${record.winner} (+${record.totalScore})</span>
-                        ${loserHtml}
-                        <span class="player-score">炸弹倍数: ${record.bombMultiplier}倍</span>
-                    </div>
-                `;
-                
-                historyContainer.appendChild(roundItem);
-            });
+            }
+            renderTotalScoreBoard();
         }
 
-        // 更新状态栏
-        function updateStatusBar(message) {
-            statusBar.textContent = message;
-            
+        // 累计分数表（美化版）
+        function renderTotalScoreBoard() {
+            const container = document.getElementById('scoreboardContainer');
+            if (!container) return;
+            if (!gameState.players.length) { container.innerHTML = ''; return; }
+            const totals = gameState.players.map((p, i) => {
+                let sum = 0;
+                gameState.rounds.forEach(r => {
+                    const s = r.scores.find(s => s.playerIndex === i);
+                    if (s) sum += s.finalScore;
+                });
+                return { name: p, total: sum };
+            });
+            let html = '<table class="scoreboard-table"><thead><tr><th>玩家</th><th>累计分数</th></tr></thead><tbody>';
+            totals.forEach(t => {
+                const cls = t.total >= 0 ? 'positive' : 'negative';
+                html += `<tr><td><strong>${t.name}</strong></td><td class="${cls}">${t.total}</td></tr>`;
+            });
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function updateStatusBar(msg) {
+            statusBar.textContent = msg;
             setTimeout(() => {
-                if (statusBar.textContent === message && !message.includes('成功') && !message.includes('失败')) {
-                    statusBar.textContent = '请选择本局赢家，然后选择其他玩家的手牌数量';
-                }
+                if (statusBar.textContent === msg && !msg.includes('成功') && !msg.includes('失败'))
+                    statusBar.textContent = '请选择赢家及每位玩家的手牌与炸弹数';
             }, 3000);
         }
 
-        // 清空设置
         function clearSetup() {
-            if (confirm('确定要清空所有设置吗？这将重置整个游戏！')) {
-                gameState.players = [];
-                gameState.rounds = [];
-                gameState.currentRound = 1;
-                gameState.history = [];
-                gameState.undoStack = [];
-                gameState.lastWinner = null;
-                gameState.isNewRound = false;
-                gameState.isRoundRecorded = false;
-                gameState.bombMultiplier = 1;
-                
-                playerCountSelect.value = '8';
-                initPlayerInputs();
-                roundLimitInput.value = '0';
-                totalLimitInput.value = '0';
-                roundLimitInput.disabled = false;
-                totalLimitInput.disabled = false;
-                bombMultiplierSelect.value = '1';
-                bombMultiplierSelect.disabled = false;
-                
-                gameArea.style.display = 'none';
-                historySection.style.display = 'none';
-                
-                setupSection.classList.remove('collapsed');
-                setupToggle.textContent = '点击折叠';
-                
-                clearGameState();
-                updateStatusBar('已清空所有设置，请重新配置游戏');
-                renderHistory();
-            }
+            if (!confirm('确定清空所有设置？')) return;
+            Object.assign(gameState, {
+                players: [], rounds: [], currentRound: 1, history: [],
+                undoStack: [], lastWinner: null, isNewRound: false, isRoundRecorded: false,
+                roundLimit: 0, totalLimit: 0
+            });
+            playerCountSelect.value = '8';
+            initPlayerInputs();
+            roundLimitInput.value = '0'; totalLimitInput.value = '0';
+            roundLimitInput.disabled = false; totalLimitInput.disabled = false;
+            gameArea.style.display = 'none'; historySection.style.display = 'none';
+            setupSection.classList.remove('collapsed'); setupToggle.textContent = '点击折叠';
+            clearGameState();
+            updateStatusBar('已清空');
+            renderHistory();
         }
 
-        // 折叠/展开设置区
         function toggleSetupSection() {
             setupSection.classList.toggle('collapsed');
             setupToggle.textContent = setupSection.classList.contains('collapsed') ? '点击展开' : '点击折叠';
         }
 
-        // 页面加载时尝试恢复游戏状态
+        // 启动
         window.addEventListener('DOMContentLoaded', () => {
             initPlayerInputs();
-            
-            // 尝试加载本地存储的游戏状态
-            if (loadGameState() && gameState.players.length > 0) {
+            if (loadGameState() && gameState.players.length) {
                 roundLimitInput.value = gameState.roundLimit;
                 totalLimitInput.value = gameState.totalLimit;
-                roundLimitInput.disabled = true;
-                totalLimitInput.disabled = true;
-                
+                roundLimitInput.disabled = true; totalLimitInput.disabled = true;
                 updateWinnerRadio();
                 renderGameArea();
                 renderHistory();
-                
                 gameArea.style.display = 'block';
                 historySection.style.display = 'block';
                 setupSection.classList.add('collapsed');
                 setupToggle.textContent = '点击展开';
-                
-                updateStatusBar(`已恢复游戏，当前第 ${gameState.currentRound} 局`);
+                updateStatusBar(`已恢复游戏，第${gameState.currentRound}局`);
             }
-            
             playerCountSelect.addEventListener('change', initPlayerInputs);
             setupBtn.addEventListener('click', setupPlayers);
             clearBtn.addEventListener('click', clearSetup);
@@ -1393,26 +1051,14 @@ function undoLastRound() {
             exportBtn.addEventListener('click', exportData);
             importBtn.addEventListener('click', () => importFile.click());
             importFile.addEventListener('change', importData);
+            exportCsvBtn.addEventListener('click', exportCsv);
+            importCsvBtn.addEventListener('click', () => importCsvFile.click());
+            importCsvFile.addEventListener('change', importCsv);
             clearHistoryBtn.addEventListener('click', () => {
-                if (confirm('确定要清空所有历史记录吗？')) {
-                    gameState.history = [];
-                    renderHistory();
-                    saveGameState();
-                    updateStatusBar('已清空所有历史记录');
-                }
+                if (confirm('确定清空历史？')) { gameState.history = []; renderHistory(); saveGameState(); updateStatusBar('历史已清空'); }
             });
-            
-            // 手牌数下拉框变更时重新计算
-            scoresBody.addEventListener('change', (e) => {
-                if (e.target.classList.contains('card-count')) {
-                    calculateCurrentRound();
-                }
-            });
-            
-            bombMultiplierSelect.addEventListener('change', () => {
-                gameState.bombMultiplier = parseInt(bombMultiplierSelect.value);
-                calculateCurrentRound();
-                updateLimitsInfo();
+            scoresBody.addEventListener('change', e => {
+                if (e.target.classList.contains('card-count') || e.target.classList.contains('bomb-count')) calculateCurrentRound();
             });
         });
     </script>
