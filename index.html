@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>干瞪眼记分器 v20260504.2050</title>
+    <title>干瞪眼记分器 v20260504.2120</title>
     <style>
         :root {
             --primary-color: #4CAF50;
@@ -822,7 +822,39 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     if (!data.players || !data.rounds) throw new Error('无效数据');
-                    if (gameState.players.length > 0) gameState.undoStack.push(JSON.parse(JSON.stringify(gameState)));
+
+                    // ✅ 修复旧数据：补全炸弹相关字段
+                    data.rounds.forEach(round => {
+                        // 1. 计算 totalBombCount
+                        if (round.totalBombCount === undefined) {
+                            // 从 bombMultiplier 反推 (log2)
+                            round.totalBombCount = Math.round(Math.log2(round.bombMultiplier || 1));
+                        }
+                        // 2. 为每个 scores 条目补 bombCount
+                        round.scores.forEach(s => {
+                            if (s.bombCount === undefined) {
+                                s.bombCount = 0; // 旧数据无法知道单人，统一设为0
+                            }
+                        });
+                    });
+
+                    // 修复 history，补 bombCounts
+                    data.history = (data.history || []).map(h => {
+                        if (!h.bombCounts && h.bombMultiplier !== undefined) {
+                            const totalBombCount = Math.round(Math.log2(h.bombMultiplier || 1));
+                            h.bombCounts = data.players.map(name => ({
+                                name,
+                                bombCount: 0  // 旧数据无法区分单人，均置0
+                            }));
+                            h.totalBombCount = totalBombCount; // 同时补充总炸弹数
+                        }
+                        return h;
+                    });
+
+                    if (gameState.players.length > 0) {
+                        gameState.undoStack.push(JSON.parse(JSON.stringify(gameState)));
+                    }
+
                     Object.assign(gameState, {
                         players: data.players,
                         rounds: data.rounds,
@@ -835,6 +867,7 @@
                         isRoundRecorded: false,
                         undoStack: []
                     });
+
                     roundLimitInput.value = gameState.roundLimit;
                     totalLimitInput.value = gameState.totalLimit;
                     roundLimitInput.disabled = true;
