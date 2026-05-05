@@ -3,103 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>干瞪眼记分器 v20260504.2120</title>
+    <title>干瞪眼记分器 v20260505.1740</title>
     <style>
         :root {
-            --primary-color: #4CAF50;
-            --secondary-color: #2196F3;
-            --danger-color: #f44336;
-            --success-color: #4CAF50;
-            --warning-color: #ff9800;
-            --light-gray: #f5f5f5;
-            --dark-gray: #333;
-            --border-radius: 8px;
-            --box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --primary-color: #4CAF50; --secondary-color: #2196F3; --danger-color: #f44336;
+            --success-color: #4CAF50; --warning-color: #ff9800; --light-gray: #f5f5f5;
+            --dark-gray: #333; --border-radius: 8px; --box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
             font-family: 'Arial', 'Microsoft YaHei', sans-serif;
-            line-height: 1.6;
-            color: #333;
+            line-height: 1.6; color: #333;
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e7f1 100%);
-            min-height: 100vh;
-            padding: 20px;
+            min-height: 100vh; padding: 20px;
         }
-        
         .container { max-width: 1200px; margin: 0 auto; }
-        
         header {
-            text-align: center;
-            margin-bottom: 20px;
-            background: white;
-            padding: 15px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
+            text-align: center; margin-bottom: 20px; background: white;
+            padding: 15px; border-radius: var(--border-radius); box-shadow: var(--box-shadow);
         }
-        
         h1 { color: var(--primary-color); font-size: 1.8rem; margin-bottom: 5px; }
         .subtitle { color: #666; font-size: 0.9rem; }
-        
+
         .setup-section {
-            background: white;
-            padding: 20px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-            overflow: hidden;
+            background: white; padding: 20px; border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow); margin-bottom: 20px; transition: all 0.3s ease; overflow: hidden;
         }
-        .setup-section.collapsed {
-            max-height: 55px !important;
-            padding-bottom: 8px;
-        }
+        .setup-section.collapsed { max-height: 55px !important; padding-bottom: 8px; }
         .setup-toggle {
-            text-align: center;
-            margin-top: 5px;
-            color: var(--secondary-color);
-            cursor: pointer;
-            font-size: 0.9rem;
-            position: relative;
-            z-index: 1;
+            text-align: center; margin-top: 5px; color: var(--secondary-color);
+            cursor: pointer; font-size: 0.9rem; position: relative; z-index: 1;
         }
         .setup-section.collapsed .section-title { margin-bottom: 0; }
-        
         .section-title {
-            font-size: 1.2rem;
-            color: var(--dark-gray);
-            margin-bottom: 15px;
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            position: relative;
+            font-size: 1.2rem; color: var(--dark-gray); margin-bottom: 15px;
+            border-bottom: 2px solid var(--primary-color); padding-bottom: 5px;
+            display: flex; justify-content: space-between; align-items: center;
+            gap: 10px; position: relative;
         }
         .section-title span { flex-shrink: 0; }
-        
+
         .player-count-setup { margin-bottom: 15px; }
         .player-count-setup label { font-weight: bold; margin-right: 10px; }
         .player-count-setup select {
-            padding: 4px 8px;
-            border: 2px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            width: 100px;
+            padding: 4px 8px; border: 2px solid #ddd; border-radius: 4px; font-size: 14px; width: 100px;
         }
-        
-        .players-setup {
-            display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px;
-        }
+
+        .players-setup { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; }
         .player-input { flex: 1; min-width: 120px; }
         .player-input input {
-            width: 100%; padding: 8px 12px;
-            border: 2px solid #ddd; border-radius: 4px; font-size: 14px;
+            width: 100%; padding: 8px 12px; border: 2px solid #ddd; border-radius: 4px; font-size: 14px;
         }
         .player-input input:focus { border-color: var(--primary-color); outline: none; }
-        
+
         .score-limit-setup {
             display: flex; flex-wrap: wrap; gap: 15px; margin: 15px 0;
             padding: 10px; background: #f8f9fa; border-radius: var(--border-radius);
@@ -110,7 +66,13 @@
             width: 100%; padding: 8px 12px; border: 2px solid #ddd; border-radius: 4px; font-size: 14px;
         }
         .limit-item input:disabled { background: #eee; cursor: not-allowed; }
-        
+
+        .mode-setup {
+            margin: 15px 0; padding: 10px; background: #f8f9fa; border-radius: var(--border-radius);
+            display: flex; align-items: center; gap: 20px;
+        }
+        .mode-setup label { font-weight: bold; }
+
         .controls { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
         button {
             padding: 10px 15px; background: var(--primary-color); color: white;
@@ -123,7 +85,7 @@
         button.danger { background: var(--danger-color); }
         button.danger:hover { background: #d32f2f; }
         button:disabled { background: #ccc; cursor: not-allowed; transform: none; }
-        
+
         .game-area {
             background: white; border-radius: var(--border-radius);
             box-shadow: var(--box-shadow); padding: 20px; margin-bottom: 20px;
@@ -132,49 +94,44 @@
             display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #eee;
         }
-        
         .winner-selection {
             margin-bottom: 15px; padding: 10px; background: #f8f9fa; border-radius: var(--border-radius);
         }
-        .winner-selection label.main-label {
-            font-weight: bold; margin-right: 10px; display: block; margin-bottom: 10px;
-        }
+        .winner-selection label.main-label { font-weight: bold; margin-right: 10px; display: block; margin-bottom: 10px; }
         .winner-radio-group { display: flex; flex-wrap: wrap; gap: 15px; }
         .winner-radio-item { display: flex; align-items: center; cursor: pointer; }
         .winner-radio-item input { margin-right: 5px; accent-color: var(--primary-color); }
-        
+
         .scores-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         .scores-table th, .scores-table td {
             border: 1px solid #ddd; padding: 10px; text-align: center;
         }
         .scores-table th { background-color: var(--primary-color); color: white; font-weight: bold; }
         .scores-table tr:nth-child(even) { background-color: var(--light-gray); }
-        .scores-table td select {
-            width: 70px; padding: 6px; border: 1px solid #ddd;
-            border-radius: 4px; text-align: center; font-size: 14px; background: white;
+        .scores-table td input[type="number"] {
+            width: 70px; padding: 6px; border: 1px solid #ddd; border-radius: 4px; text-align: center; font-size: 14px;
         }
-        .scores-table td select:disabled { background: #eee; cursor: not-allowed; color: #999; }
-        .scores-table td select.bomb-count {
-            width: 65px; background: #fffbe6;
-        }
+        .scores-table td input:disabled { background: #eee; cursor: not-allowed; color: #999; }
+        .scores-table td input.bomb-count { width: 65px; background: #fffbe6; }
         .scores-table td.spring-status { font-weight: bold; color: var(--warning-color); }
         .total-row { font-weight: bold; background-color: #e8f5e9 !important; }
-        
+        .locked-card {
+            display: inline-block; width: 70px; padding: 6px; background: #e0e0e0;
+            color: #666; border-radius: 4px; font-size: 14px; text-align: center;
+        }
+
         .history-section {
             background: white; border-radius: var(--border-radius);
             box-shadow: var(--box-shadow); padding: 20px; margin-top: 20px;
         }
-        
-        /* 累计分数表美化 */
         .scoreboard-container { margin-bottom: 20px; }
         .scoreboard-table {
-            border-collapse: separate; border-spacing: 0;
-            width: 100%; border-radius: 12px; overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 15px;
+            border-collapse: separate; border-spacing: 0; width: 100%;
+            border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 15px;
         }
         .scoreboard-table th {
-            background: linear-gradient(135deg, #4CAF50, #2E7D32);
-            color: white; padding: 12px; font-weight: 600; font-size: 1rem;
+            background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white;
+            padding: 12px; font-weight: 600; font-size: 1rem;
         }
         .scoreboard-table td {
             padding: 10px; text-align: center; background-color: #fff;
@@ -184,7 +141,7 @@
         .scoreboard-table tr:nth-child(even) td { background-color: #f9f9f9; }
         .scoreboard-table td.positive { color: #2E7D32; font-weight: bold; }
         .scoreboard-table td.negative { color: #c62828; font-weight: bold; }
-        
+
         .round-item {
             margin-bottom: 10px; padding: 10px; border: 1px solid #ddd;
             border-radius: 4px; background: #f9f9f9;
@@ -198,19 +155,17 @@
         .winner-score { background: #e8f5e9; color: var(--success-color); font-weight: bold; }
         .loser-score { background: #ffebee; color: var(--danger-color); }
         .spring-marker { color: var(--warning-color); font-weight: bold; }
-        
+
         .export-import { margin-top: 20px; }
         .status-bar {
             text-align: center; padding: 10px; background: #e8f5e9;
-            border-radius: var(--border-radius); margin-top: 10px;
-            font-size: 0.9rem; color: var(--primary-color);
+            border-radius: var(--border-radius); margin-top: 10px; font-size: 0.9rem; color: var(--primary-color);
         }
         .limits-section {
-            background: #fff8e1; padding: 10px;
-            border-radius: var(--border-radius); margin-top: 10px; font-size: 0.9rem;
+            background: #fff8e1; padding: 10px; border-radius: var(--border-radius);
+            margin-top: 10px; font-size: 0.9rem;
         }
-        
-        /* 清空历史按钮 */
+
         #clearHistoryBtn {
             display: inline-block !important; text-decoration: none !important;
             text-align: center !important; cursor: pointer !important;
@@ -222,31 +177,19 @@
             min-width: unset !important; max-width: unset !important; box-sizing: border-box !important;
         }
         .section-title { position: relative !important; padding-right: 80px !important; }
-        
+
         @media (max-width: 768px) {
             .controls { flex-direction: column; }
             button { width: 100%; margin-bottom: 5px; }
             #clearHistoryBtn { width: 60px !important; height: 20px !important; line-height: 20px !important; font-size: 11px !important; }
         }
-
-        .locked-card {
-            display: inline-block;
-            width: 70px;           /* 与下拉框同宽，保持列对齐 */
-            padding: 6px;
-            background: #e0e0e0;
-            color: #666;
-            border-radius: 4px;
-            font-size: 14px;
-            text-align: center;
-        }
-
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>干瞪眼记分器</h1>
-            <p class="subtitle">简单清爽 · 手机电脑通用 · 本地存储</p>
+            <p class="subtitle">支持单人/集体摸牌 · 赢家手牌锁0 · 炸弹不限 · 模式可锁定</p>
         </header>
 
         <section class="setup-section" id="setupSection">
@@ -257,17 +200,14 @@
             <div class="player-count-setup" style="display: flex; flex-direction: column; gap: 6px;">
                 <label for="playerCount">玩家人数 (2-8人):</label>
                 <select id="playerCount">
-                    <option value="2">2人</option>
-                    <option value="3">3人</option>
-                    <option value="4">4人</option>
-                    <option value="5">5人</option>
-                    <option value="6">6人</option>
-                    <option value="7">7人</option>
+                    <option value="2">2人</option><option value="3">3人</option>
+                    <option value="4">4人</option><option value="5">5人</option>
+                    <option value="6">6人</option><option value="7">7人</option>
                     <option value="8" selected>8人</option>
                 </select>
             </div>
             <div class="players-setup" id="playersSetup"></div>
-            
+
             <div class="score-limit-setup">
                 <div class="limit-item">
                     <label for="roundLimit">每局最高输分 (0=无限制):</label>
@@ -278,7 +218,13 @@
                     <input type="number" id="totalLimit" placeholder="0" value="0" min="0">
                 </div>
             </div>
-            
+
+            <div class="mode-setup">
+                <label>摸牌模式：</label>
+                <label><input type="radio" name="gameMode" value="single" checked> 单人摸牌</label>
+                <label><input type="radio" name="gameMode" value="group"> 集体摸牌</label>
+            </div>
+
             <div class="controls">
                 <button id="setupBtn">开始游戏</button>
                 <button class="secondary" id="exportBtn">导出数据</button>
@@ -293,45 +239,39 @@
             <div class="round-header">
                 <h2 class="section-title">第 <span id="currentRound">1</span> 局</h2>
             </div>
-            
+
             <div class="winner-selection">
                 <label class="main-label">本局赢家:</label>
                 <div class="winner-radio-group" id="winnerRadioGroup"></div>
                 <span id="springRuleInfo" style="margin-left: 15px; color: #666; font-size: 0.9rem; display: block; margin-top: 10px;"></span>
             </div>
-            
+
             <table class="scores-table" id="scoresTable">
                 <thead>
                     <tr>
-                        <th>玩家</th>
-                        <th>炸弹</th>
-                        <th>手牌</th>
-                        <th>春天</th>
-                        <th>本局</th>
+                        <th>玩家</th><th>炸弹</th><th>手牌</th><th>春天</th><th>本局</th>
                     </tr>
                 </thead>
                 <tbody id="scoresBody"></tbody>
                 <tfoot>
                     <tr class="total-row">
-                        <td>总分</td>
-                        <td colspan="3"></td>
-                        <td id="roundTotal">0</td>
+                        <td>总分</td><td colspan="3"></td><td id="roundTotal">0</td>
                     </tr>
                 </tfoot>
             </table>
-            
+
             <div class="limits-section" id="limitsInfo">
-                记分规则：输家手牌分×2^(总炸弹数)，封顶后给赢家。赢分不封顶。
+                规则：输家手牌≥5且非上局赢家即春天(×2)，再乘总炸弹倍数。
             </div>
-            
+
             <div class="controls">
                 <button id="recordRoundBtn">记录本局</button>
                 <button id="newRoundBtn" class="secondary" disabled>打开新一局</button>
                 <button class="secondary" id="undoBtn" disabled>撤销本局</button>
             </div>
-            
+
             <div class="status-bar" id="statusBar">
-                请选择本局赢家，然后选择所有玩家的手牌数量和炸弹数
+                请选择赢家，填写各人手牌及炸弹数
             </div>
         </section>
 
@@ -340,9 +280,7 @@
                 对局历史
                 <a href="javascript:void(0)" class="danger" id="clearHistoryBtn">清空历史</a>
             </h2>
-            <!-- 累计分数表 -->
             <div id="scoreboardContainer" class="scoreboard-container"></div>
-            
             <div class="export-import">
                 <input type="file" id="importFile" accept=".json" style="display: none;">
                 <input type="file" id="importCsvFile" accept=".csv" style="display: none;">
@@ -362,6 +300,7 @@
             lastWinner: null,
             roundLimit: 0,
             totalLimit: 0,
+            gameMode: 'single',
             isNewRound: false,
             isRoundRecorded: false
         };
@@ -395,6 +334,18 @@
         const limitsInfo = document.getElementById('limitsInfo');
         const setupSection = document.getElementById('setupSection');
         const setupToggle = document.getElementById('setupToggle');
+        const gameModeSingle = document.querySelector('input[name="gameMode"][value="single"]');
+        const gameModeGroup = document.querySelector('input[name="gameMode"][value="group"]');
+
+        // 锁定/解锁模式按钮
+        function lockGameMode() {
+            gameModeSingle.disabled = true;
+            gameModeGroup.disabled = true;
+        }
+        function unlockGameMode() {
+            gameModeSingle.disabled = false;
+            gameModeGroup.disabled = false;
+        }
 
         // 本地存储
         function saveGameState() {
@@ -404,13 +355,12 @@
             const saved = localStorage.getItem('gandengyan_gameState');
             if (saved) {
                 try { Object.assign(gameState, JSON.parse(saved)); return true; }
-                catch (e) { console.error('加载状态失败', e); return false; }
+                catch (e) { console.error('加载失败', e); return false; }
             }
             return false;
         }
         function clearGameState() { localStorage.removeItem('gandengyan_gameState'); }
 
-        // 生成玩家输入框
         function initPlayerInputs() {
             const count = parseInt(playerCountSelect.value);
             playersSetup.innerHTML = '';
@@ -423,7 +373,6 @@
             }
         }
 
-        // 赢家单选框
         function updateWinnerRadio() {
             winnerRadioGroup.innerHTML = '';
             gameState.players.forEach((player, index) => {
@@ -442,63 +391,61 @@
             if (!radio) { springRuleInfo.textContent = '请先选择本局赢家'; return; }
             const idx = parseInt(radio.value);
             const name = gameState.players[idx];
+            const modeText = gameState.gameMode === 'single' ? '单人摸牌' : '集体摸牌';
             if (gameState.currentRound === 1) {
-                springRuleInfo.textContent = `第一局：所有输家5张手牌算春天10分`;
+                springRuleInfo.textContent = `第一局，${modeText}。输家≥5张且非上局赢家即春天（×2）`;
             } else if (idx === gameState.lastWinner) {
-                springRuleInfo.textContent = `${name}上一局也赢了：其他输家5张算春天10分，${name}不可能被春天`;
+                springRuleInfo.textContent = `${name}是上局赢家，本局不可能被春天。`;
             } else {
-                springRuleInfo.textContent = `${name}上一局没赢：所有输家5张算春天10分`;
+                springRuleInfo.textContent = `${modeText}：赢家${name}，输家≥5张可春天（×2）。`;
             }
         }
 
         function onWinnerChange() {
             if (gameState.isRoundRecorded) return;
-
             updateSpringRuleInfo();
-
             const winnerRadio = document.querySelector('input[name="winner"]:checked');
             if (!winnerRadio) return;
             const newWinnerIndex = parseInt(winnerRadio.value);
 
-            //遍历所有玩家行，修改手牌格（每行第3个td，索引2）
             const rows = document.querySelectorAll('#scoresBody tr');
             rows.forEach(row => {
                 const idx = parseInt(row.getAttribute('data-player-index'));
-                const cardTd = row.children[2]; // 手牌列（玩家|炸弹|手牌|春天|本局）索引2
+                const cardTd = row.children[2];  // 手牌列
+                const springTd = row.children[3]; // 春天列
 
                 if (idx === newWinnerIndex) {
-                    // 新赢家：替换为锁定文本
                     cardTd.innerHTML = '<span class="locked-card">0</span>';
+                    // 赢家不需要春天选择，集体模式下显示 '-' 没问题
+                    springTd.innerHTML = '-';
                 } else {
-                    // 其他人：如果之前被锁定（曾是赢家），则恢复为下拉框
+                    // 恢复手牌输入框
                     if (!cardTd.querySelector('.card-count')) {
-                        // 重建下拉框，默认值为0，但保留该玩家之前已选的值？这里取当前内存中无，故设为0
-                        // 注意：之前的选择在切换前已丢失，因为原赢家手牌一直是0且锁定。
-                        // 恢复时设为0是合理的。
-                        let opts = '';
-                        for (let i = 0; i <= 5; i++) {
-                            opts += `<option value="${i}" ${i === 0 ? 'selected' : ''}>${i}</option>`;
-                        }
-                        cardTd.innerHTML = `<select class="card-count" data-index="${idx}">
-                            ${opts}
-                        </select>`;
+                        cardTd.innerHTML = `<input type="number" class="card-count" data-index="${idx}" min="1" value="" placeholder="手牌" style="width:70px;" onfocus="this.select()">`;
                     }
-                    // 确保可编辑
-                    const sel = cardTd.querySelector('.card-count');
-                    if (sel) sel.disabled = false;
+                    // 春天列：集体模式保持原有复选框，单人模式占位
+                    if (gameState.gameMode === 'group') {
+                        // 如果原本没有复选框，创建一个（默认未勾选）
+                        if (!springTd.querySelector('.spring-check')) {
+                            const isPrevWinner = (idx === gameState.lastWinner);
+                            springTd.innerHTML = `<input type="checkbox" class="spring-check" data-index="${idx}" ${isPrevWinner ? 'disabled' : ''}>`;
+                        } else {
+                            // 已有复选框，只需更新禁用状态
+                            const cb = springTd.querySelector('.spring-check');
+                            cb.disabled = (idx === gameState.lastWinner);
+                        }
+                    } else {
+                        springTd.innerHTML = '-';
+                    }
                 }
             });
 
-            // 炸弹列全部保持可编辑
-            document.querySelectorAll('.bomb-count').forEach(sel => {
-                sel.disabled = false;
-            });
-
+            // 炸弹列全部可编辑
+            document.querySelectorAll('.bomb-count').forEach(inp => inp.disabled = false);
             calculateCurrentRound();
             updateButtonStates();
-        }   
+        }
 
-        // 设置玩家
         function setupPlayers() {
             const count = parseInt(playerCountSelect.value);
             const inputs = document.querySelectorAll('#playersSetup input');
@@ -506,6 +453,9 @@
             if (names.length < count) { alert(`请设置满 ${count} 个玩家名字！`); return; }
             if (names.length > count) { alert(`只能设置 ${count} 个玩家！`); return; }
             if (!validatePlayerNames(names)) return;
+
+            const modeRadio = document.querySelector('input[name="gameMode"]:checked');
+            gameState.gameMode = modeRadio ? modeRadio.value : 'single';
 
             if (gameState.players.length > 0)
                 gameState.undoStack.push(JSON.parse(JSON.stringify(gameState)));
@@ -523,6 +473,8 @@
             roundLimitInput.disabled = true;
             totalLimitInput.disabled = true;
 
+            lockGameMode();
+
             updateWinnerRadio();
             renderGameArea();
             gameArea.style.display = 'block';
@@ -530,7 +482,7 @@
             setupSection.classList.add('collapsed');
             setupToggle.textContent = '点击展开';
             saveGameState();
-            updateStatusBar(`已设置 ${count} 个玩家，开始第1局`);
+            updateStatusBar(`已设置 ${count} 人，模式：${gameState.gameMode === 'single' ? '单人摸牌' : '集体摸牌'}，开始第1局`);
         }
 
         function validatePlayerNames(names) {
@@ -539,7 +491,6 @@
             return true;
         }
 
-        // 渲染游戏表格
         function renderGameArea() {
             scoresBody.innerHTML = '';
             const winnerRadio = document.querySelector('input[name="winner"]:checked');
@@ -549,29 +500,33 @@
                 const row = document.createElement('tr');
                 row.setAttribute('data-player-index', index);
 
-                let cardOpts = '';
-                for (let i = 0; i <= 5; i++) {
-                    const sel = (i === 0) ? 'selected' : '';
-                    cardOpts += `<option value="${i}" ${sel}>${i}</option>`;
+                // 炸弹输入框（不限最大值）
+                const bombInputHtml = `<input type="number" class="bomb-count" data-index="${index}" min="0" value="" placeholder="0" style="width:65px;" onfocus="this.select()" ${gameState.isRoundRecorded ? 'disabled' : ''}>`;
+
+                // 手牌列
+                let cardInputHtml;
+                if (index === winnerIndex) {
+                    cardInputHtml = '<span class="locked-card">0</span>';
+                } else {
+                    cardInputHtml = `<input type="number" class="card-count" data-index="${index}" min="1" value="" placeholder="手牌" style="width:70px;" onfocus="this.select()" ${gameState.isRoundRecorded ? 'disabled' : ''}>`;
+                }
+
+                // 春天列
+                let springHtml;
+                if (index === winnerIndex) {
+                    springHtml = '-';
+                } else if (gameState.gameMode === 'group') {
+                    const isPrevWinner = (index === gameState.lastWinner);
+                    springHtml = `<input type="checkbox" class="spring-check" data-index="${index}" ${isPrevWinner ? 'disabled' : ''} ${gameState.isRoundRecorded ? 'disabled' : ''}>`;
+                } else {
+                    springHtml = '-';
                 }
 
                 row.innerHTML = `
                     <td><strong>${player}</strong></td>
-                    <td>
-                        <select class="bomb-count" data-index="${index}" ${gameState.isRoundRecorded ? 'disabled' : ''}>
-                            <option value="0">0</option><option value="1">1</option><option value="2">2</option>
-                            <option value="3">3</option><option value="4">4</option>
-                        </select>
-                    </td>
-                    <td>
-                        ${index === winnerIndex 
-                            ? '<span class="locked-card">0</span>' 
-                            : `<select class="card-count" data-index="${index}" ${gameState.isRoundRecorded ? 'disabled' : ''}>
-                                ${cardOpts}
-                            </select>`
-                        }
-                    </td>
-                    <td class="spring-status" data-index="${index}">-</td>
+                    <td>${bombInputHtml}</td>
+                    <td>${cardInputHtml}</td>
+                    <td class="spring-status" data-index="${index}">${springHtml}</td>
                     <td data-score-index="${index}">待计算</td>
                 `;
                 scoresBody.appendChild(row);
@@ -589,35 +544,40 @@
             undoBtn.disabled = !gameState.isRoundRecorded || gameState.isNewRound || gameState.undoStack.length === 0;
             newRoundBtn.disabled = !gameState.isRoundRecorded;
 
-            const radios = document.querySelectorAll('input[name="winner"]');
-            radios.forEach(r => r.disabled = gameState.isRoundRecorded);
-            document.querySelectorAll('.card-count').forEach(sel => {
-                sel.disabled = gameState.isRoundRecorded ? true : parseInt(sel.dataset.index) === (document.querySelector('input[name="winner"]:checked')?.value ?? -1);
+            document.querySelectorAll('input[name="winner"]').forEach(r => r.disabled = gameState.isRoundRecorded);
+
+            document.querySelectorAll('.card-count').forEach(inp => {
+                const isWinner = parseInt(inp.dataset.index) === (document.querySelector('input[name="winner"]:checked')?.value ?? -1);
+                inp.disabled = gameState.isRoundRecorded || isWinner;
             });
-            document.querySelectorAll('.bomb-count').forEach(sel => {
-                sel.disabled = gameState.isRoundRecorded;
+
+            document.querySelectorAll('.bomb-count').forEach(inp => inp.disabled = gameState.isRoundRecorded);
+
+            document.querySelectorAll('.spring-check').forEach(cb => {
+                const isLastWinner = parseInt(cb.dataset.index) === gameState.lastWinner;
+                cb.disabled = gameState.isRoundRecorded || isLastWinner;
             });
         }
 
         function updateLimitsInfo() {
-            let txt = '记分规则：输家手牌分 × 2^(总炸弹数)';
-            if (gameState.roundLimit > 0) txt += `，每局最高输分${gameState.roundLimit}分`;
-            if (gameState.totalLimit > 0) txt += `，活动最高输分${gameState.totalLimit}分`;
+            let txt = `模式：${gameState.gameMode === 'single' ? '单人自动春天' : '集体手动春天'}。`;
+            txt += '手牌≥5且非上局赢家即春天(×2)，基础分 × 总炸弹倍数(2^总炸弹数) ';
+            if (gameState.roundLimit > 0) txt += `，每局最高输${gameState.roundLimit}分`;
+            if (gameState.totalLimit > 0) txt += `，活动最高输${gameState.totalLimit}分`;
             txt += '。赢分不封顶。';
             limitsInfo.textContent = txt;
         }
 
-        // 计算本局（使用全局总炸弹倍数）
         function calculateCurrentRound() {
             const winnerRadio = document.querySelector('input[name="winner"]:checked');
             if (!winnerRadio) return null;
             const winnerIndex = parseInt(winnerRadio.value);
 
-            // 计算总炸弹倍数
+            // 计算总炸弹数
             let totalBombCount = 0;
             gameState.players.forEach((_, i) => {
-                const sel = document.querySelector(`.bomb-count[data-index="${i}"]`);
-                if (sel) totalBombCount += parseInt(sel.value) || 0;
+                const inp = document.querySelector(`.bomb-count[data-index="${i}"]`);
+                totalBombCount += parseInt(inp.value) || 0;
             });
             const bombMultiplier = Math.pow(2, totalBombCount);
 
@@ -629,20 +589,26 @@
             gameState.players.forEach((player, index) => {
                 if (index === winnerIndex) return;
 
-                const cardSel = document.querySelector(`.card-count[data-index="${index}"]`);
-                const cardCount = parseInt(cardSel.value) || 0;
-                const isLastWinner = index === gameState.lastWinner;
-                let baseScore = 0;
+                const cardInp = document.querySelector(`.card-count[data-index="${index}"]`);
+                let cardCount = parseInt(cardInp?.value) || 0;
+                if (cardCount < 1) cardCount = 1; // 最小按1处理
+
+                const isLastWinner = (index === gameState.lastWinner);
                 let isSpring = false;
 
-                if (!isLastWinner && cardCount === 5) { baseScore = 10; isSpring = true; }
-                else if (isLastWinner && cardCount === 5) baseScore = 5;
-                else if (cardCount >= 1 && cardCount <= 4) baseScore = cardCount;
+                if (!isLastWinner) {
+                    if (gameState.gameMode === 'single') {
+                        isSpring = cardCount >= 5;
+                    } else {
+                        const springCheck = document.querySelector(`.spring-check[data-index="${index}"]`);
+                        isSpring = springCheck ? springCheck.checked : false;
+                    }
+                }
 
+                let baseScore = cardCount * (isSpring ? 2 : 1);
                 let score = baseScore * bombMultiplier;
 
                 if (roundLimit > 0 && score > roundLimit) score = roundLimit;
-
                 if (totalLimit > 0) {
                     let currentTotal = 0;
                     gameState.rounds.forEach(r => {
@@ -660,7 +626,7 @@
                 loserScores.push({
                     playerIndex: index,
                     cardCount,
-                    bombCount: parseInt(document.querySelector(`.bomb-count[data-index="${index}"]`).value) || 0,
+                    bombCount: parseInt(document.querySelector(`.bomb-count[data-index="${index}"]`)?.value) || 0,
                     baseScore,
                     finalScore: score,
                     isSpring
@@ -668,15 +634,21 @@
 
                 const springCell = document.querySelector(`.spring-status[data-index="${index}"]`);
                 const scoreCell = document.querySelector(`td[data-score-index="${index}"]`);
-                springCell.textContent = isSpring ? '春天' : '-';
-                springCell.className = isSpring ? 'spring-status spring-marker' : 'spring-status';
-                scoreCell.textContent = `-${score}`;
-                scoreCell.className = 'loser-score';
+                // 单人模式才自动更新春天文字，集体模式保留原有复选框不动
+                if (springCell && gameState.gameMode === 'single') {
+                    springCell.innerHTML = isSpring ? '<span class="spring-marker">春天×2</span>' : '-';
+                }
+                if (scoreCell) {
+                    scoreCell.textContent = `-${score}`;
+                    scoreCell.className = 'loser-score';
+                }
             });
 
             const winnerCell = document.querySelector(`td[data-score-index="${winnerIndex}"]`);
-            winnerCell.textContent = `+${totalLoserScore}`;
-            winnerCell.className = 'winner-score';
+            if (winnerCell) {
+                winnerCell.textContent = `+${totalLoserScore}`;
+                winnerCell.className = 'winner-score';
+            }
             roundTotalEl.textContent = 0;
 
             return {
@@ -688,7 +660,6 @@
             };
         }
 
-        // 记录本局
         function recordCurrentRound() {
             if (gameState.isRoundRecorded) { alert('本局已记录！'); return; }
             const calc = calculateCurrentRound();
@@ -714,14 +685,14 @@
                     playerIndex: calc.winnerIndex,
                     playerName: gameState.players[calc.winnerIndex],
                     cardCount: 0,
-                    bombCount: parseInt(document.querySelector(`.bomb-count[data-index="${calc.winnerIndex}"]`).value) || 0,
+                    bombCount: parseInt(document.querySelector(`.bomb-count[data-index="${calc.winnerIndex}"]`)?.value) || 0,
                     finalScore: calc.totalWinnerScore
                 },
                 totalBombCount: calc.totalBombCount,
                 bombMultiplier: calc.bombMultiplier,
+                gameMode: gameState.gameMode,
                 timestamp: new Date().toISOString()
             };
-            // 补充赢家分值到scores（便于统计）
             roundRecord.scores.push({
                 playerIndex: calc.winnerIndex,
                 playerName: gameState.players[calc.winnerIndex],
@@ -751,8 +722,9 @@
                 totalBombCount: calc.totalBombCount,
                 bombCounts: gameState.players.map((name, i) => ({
                     name,
-                    bombCount: parseInt(document.querySelector(`.bomb-count[data-index="${i}"]`).value) || 0
+                    bombCount: parseInt(document.querySelector(`.bomb-count[data-index="${i}"]`)?.value) || 0
                 })),
+                gameMode: gameState.gameMode,
                 timestamp: new Date().toLocaleString()
             });
 
@@ -763,7 +735,6 @@
             updateStatusBar(`第 ${gameState.currentRound} 局记录成功`);
         }
 
-        // 新局
         function openNewRound() {
             if (!gameState.isRoundRecorded) { alert('请先记录本局！'); return; }
             gameState.undoStack = [];
@@ -777,7 +748,6 @@
             updateStatusBar(`开始第 ${gameState.currentRound} 局`);
         }
 
-        // 撤销
         function undoLastRound() {
             if (gameState.undoStack.length === 0 || !gameState.isRoundRecorded || gameState.isNewRound) {
                 alert('无法撤销！'); return;
@@ -804,6 +774,7 @@
                 lastWinner: gameState.lastWinner,
                 roundLimit: gameState.roundLimit,
                 totalLimit: gameState.totalLimit,
+                gameMode: gameState.gameMode,
                 exportTime: new Date().toISOString()
             };
             const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
@@ -823,46 +794,39 @@
                     const data = JSON.parse(e.target.result);
                     if (!data.players || !data.rounds) throw new Error('无效数据');
 
-                    // ✅ 修复旧数据：补全炸弹相关字段
+                    // 补全旧数据
+                    data.gameMode = data.gameMode || 'single';
                     data.rounds.forEach(round => {
-                        // 1. 计算 totalBombCount
+                        round.gameMode = round.gameMode || data.gameMode;
                         if (round.totalBombCount === undefined) {
-                            // 从 bombMultiplier 反推 (log2)
                             round.totalBombCount = Math.round(Math.log2(round.bombMultiplier || 1));
                         }
-                        // 2. 为每个 scores 条目补 bombCount
                         round.scores.forEach(s => {
-                            if (s.bombCount === undefined) {
-                                s.bombCount = 0; // 旧数据无法知道单人，统一设为0
-                            }
+                            if (s.bombCount === undefined) s.bombCount = 0;
                         });
                     });
-
-                    // 修复 history，补 bombCounts
                     data.history = (data.history || []).map(h => {
                         if (!h.bombCounts && h.bombMultiplier !== undefined) {
-                            const totalBombCount = Math.round(Math.log2(h.bombMultiplier || 1));
-                            h.bombCounts = data.players.map(name => ({
-                                name,
-                                bombCount: 0  // 旧数据无法区分单人，均置0
-                            }));
-                            h.totalBombCount = totalBombCount; // 同时补充总炸弹数
+                            const tb = Math.round(Math.log2(h.bombMultiplier || 1));
+                            h.bombCounts = data.players.map(name => ({ name, bombCount: 0 }));
+                            h.totalBombCount = tb;
                         }
+                        h.gameMode = h.gameMode || data.gameMode;
                         return h;
                     });
 
                     if (gameState.players.length > 0) {
                         gameState.undoStack.push(JSON.parse(JSON.stringify(gameState)));
                     }
-
                     Object.assign(gameState, {
                         players: data.players,
                         rounds: data.rounds,
-                        history: data.history || [],
+                        history: data.history,
                         currentRound: data.currentRound || data.rounds.length + 1,
                         lastWinner: data.lastWinner ?? null,
                         roundLimit: data.roundLimit || 0,
                         totalLimit: data.totalLimit || 0,
+                        gameMode: data.gameMode || 'single',
                         isNewRound: false,
                         isRoundRecorded: false,
                         undoStack: []
@@ -872,6 +836,9 @@
                     totalLimitInput.value = gameState.totalLimit;
                     roundLimitInput.disabled = true;
                     totalLimitInput.disabled = true;
+                    document.querySelector(`input[name="gameMode"][value="${gameState.gameMode}"]`).checked = true;
+                    lockGameMode();  // 导入后锁定模式
+
                     updateWinnerRadio();
                     renderGameArea();
                     renderHistory();
@@ -886,16 +853,16 @@
             reader.readAsText(file);
         }
 
-        // 导出/导入CSV（适配新炸弹）
+        // CSV导出/导入
         function exportCsv() {
             if (gameState.players.length === 0 || gameState.rounds.length === 0) {
                 alert('没有对局数据可导出CSV！'); return;
             }
             let csv = `#Players,` + gameState.players.join(',') + '\n';
             csv += `#RoundLimit,${gameState.roundLimit}\n#TotalLimit,${gameState.totalLimit}\n`;
+            csv += `#GameMode,${gameState.gameMode}\n`;
             csv += `RoundNumber,Winner,Player,CardCount,BombCount,IsSpring,FinalScore,Timestamp\n`;
             gameState.rounds.forEach(round => {
-                // 赢家
                 csv += `${round.roundNumber},${round.winnerName},${round.winnerName},0,${round.winnerScore.bombCount},false,${round.winnerScore.finalScore},${round.timestamp}\n`;
                 round.scores.forEach(s => {
                     if (s.isWinner) return;
@@ -918,12 +885,13 @@
                 try {
                     const lines = e.target.result.split(/\r?\n/).filter(l => l.trim());
                     if (lines.length < 4) throw new Error('文件内容不足');
-                    let players = [], roundLimit = 0, totalLimit = 0, dataIdx = 0;
+                    let players = [], roundLimit = 0, totalLimit = 0, gameMode = 'single', dataIdx = 0;
                     for (let i = 0; i < lines.length; i++) {
                         const line = lines[i].trim();
                         if (line.startsWith('#Players,')) players = line.substring(9).split(',').map(s => s.trim()).filter(s => s);
                         else if (line.startsWith('#RoundLimit,')) roundLimit = parseInt(line.substring(12)) || 0;
                         else if (line.startsWith('#TotalLimit,')) totalLimit = parseInt(line.substring(12)) || 0;
+                        else if (line.startsWith('#GameMode,')) gameMode = line.substring(10).trim();
                         else if (line.startsWith('RoundNumber,')) { dataIdx = i+1; break; }
                     }
                     if (!players.length) throw new Error('未找到玩家');
@@ -935,13 +903,10 @@
                         const roundNum = parseInt(rn);
                         if (!roundsMap.has(roundNum)) {
                             roundsMap.set(roundNum, {
-                                roundNumber: roundNum,
-                                winnerName: winner,
+                                roundNumber: roundNum, winnerName: winner,
                                 winnerIndex: players.indexOf(winner),
-                                scores: [],
-                                totalBombCount: 0,
-                                winnerScore: null,
-                                timestamp: ts
+                                scores: [], totalBombCount: 0, winnerScore: null,
+                                timestamp: ts, gameMode
                             });
                         }
                         const round = roundsMap.get(roundNum);
@@ -949,10 +914,8 @@
                         if (player === winner && finalScore > 0) {
                             round.winnerScore = {
                                 playerIndex: players.indexOf(winner),
-                                playerName: winner,
-                                cardCount: 0,
-                                bombCount: parseInt(bc) || 0,
-                                finalScore
+                                playerName: winner, cardCount: 0,
+                                bombCount: parseInt(bc) || 0, finalScore
                             };
                             round.totalBombCount += parseInt(bc) || 0;
                         } else {
@@ -961,7 +924,7 @@
                                 playerName: player,
                                 cardCount: parseInt(cc),
                                 bombCount: parseInt(bc) || 0,
-                                baseScore: Math.abs(finalScore) / Math.pow(2, round.totalBombCount || 1), // 近似
+                                baseScore: Math.abs(finalScore) / Math.pow(2, round.totalBombCount || 1),
                                 finalScore,
                                 isSpring: isSpr === 'true'
                             });
@@ -974,6 +937,7 @@
                     gameState.rounds = newRounds;
                     gameState.roundLimit = roundLimit;
                     gameState.totalLimit = totalLimit;
+                    gameState.gameMode = gameMode;
                     gameState.currentRound = newRounds.length + 1;
                     gameState.lastWinner = newRounds[newRounds.length-1].winnerIndex;
                     gameState.isNewRound = false;
@@ -983,19 +947,25 @@
                         roundNumber: r.roundNumber,
                         winner: r.winnerName,
                         losers: r.scores.filter(s => !s.isWinner).map(s => ({
-                            name: s.playerName,
-                            cardCount: s.cardCount,
-                            score: Math.abs(s.finalScore),
-                            isSpring: s.isSpring
+                            name: s.playerName, cardCount: s.cardCount,
+                            score: Math.abs(s.finalScore), isSpring: s.isSpring
                         })),
                         totalScore: r.winnerScore ? r.winnerScore.finalScore : 0,
                         totalBombCount: r.totalBombCount,
+                        bombCounts: players.map(name => {
+                            const found = r.scores.find(s => s.playerName === name);
+                            return { name, bombCount: found ? found.bombCount : 0 };
+                        }),
+                        gameMode: r.gameMode || gameMode,
                         timestamp: new Date(r.timestamp).toLocaleString()
                     }));
                     roundLimitInput.value = gameState.roundLimit;
                     totalLimitInput.value = gameState.totalLimit;
                     roundLimitInput.disabled = true;
                     totalLimitInput.disabled = true;
+                    document.querySelector(`input[name="gameMode"][value="${gameMode}"]`).checked = true;
+                    lockGameMode();  // 锁定模式
+
                     updateWinnerRadio();
                     renderGameArea();
                     renderHistory();
@@ -1010,7 +980,6 @@
             reader.readAsText(file);
         }
 
-        // 渲染历史记录
         function renderHistory() {
             historyContainer.innerHTML = '';
             if (!gameState.history.length) {
@@ -1021,10 +990,11 @@
                     div.className = 'round-item';
                     let loserHtml = '';
                     rec.losers.forEach(l => {
-                        loserHtml += `<span class="player-score loser-score">${l.name}: ${l.cardCount}张 ${l.isSpring?'<span class="spring-marker">春天</span>':''} (-${l.score})</span>`;
+                        loserHtml += `<span class="player-score loser-score">${l.name}: ${l.cardCount}张 ${l.isSpring?'<span class="spring-marker">春天×2</span>':''} (-${l.score})</span>`;
                     });
+                    const modeText = rec.gameMode === 'group' ? '集体' : '单人';
                     div.innerHTML = `
-                        <div class="round-title">第 ${rec.roundNumber} 局 · ${rec.timestamp}</div>
+                        <div class="round-title">第 ${rec.roundNumber} 局 · ${rec.timestamp} · ${modeText}</div>
                         <div class="round-details">
                             <span class="player-score winner-score">赢家: ${rec.winner} (+${rec.totalScore})</span>
                             ${loserHtml}
@@ -1037,7 +1007,6 @@
             renderTotalScoreBoard();
         }
 
-        // 累计分数表（美化版）
         function renderTotalScoreBoard() {
             const container = document.getElementById('scoreboardContainer');
             if (!container) return;
@@ -1063,21 +1032,29 @@
             statusBar.textContent = msg;
             setTimeout(() => {
                 if (statusBar.textContent === msg && !msg.includes('成功') && !msg.includes('失败'))
-                    statusBar.textContent = '请选择赢家及每位玩家的手牌与炸弹数';
+                    statusBar.textContent = '请选择赢家，填写手牌及炸弹';
             }, 3000);
         }
 
         function clearSetup() {
-            if (!confirm('确定清空所有设置？')) return;
+            if (!confirm('确定清空所有设置？即将自动导出数据。')) return;
+            // 自动导出数据
+            if (gameState.players.length > 0 && gameState.rounds.length > 0) {
+                exportData(); // 直接调用导出函数，会下载 JSON 文件
+            }
+            // 清空
             Object.assign(gameState, {
                 players: [], rounds: [], currentRound: 1, history: [],
                 undoStack: [], lastWinner: null, isNewRound: false, isRoundRecorded: false,
-                roundLimit: 0, totalLimit: 0
+                roundLimit: 0, totalLimit: 0, gameMode: 'single'
             });
             playerCountSelect.value = '8';
             initPlayerInputs();
             roundLimitInput.value = '0'; totalLimitInput.value = '0';
             roundLimitInput.disabled = false; totalLimitInput.disabled = false;
+            document.querySelector('input[name="gameMode"][value="single"]').checked = true;
+            unlockGameMode();
+
             gameArea.style.display = 'none'; historySection.style.display = 'none';
             setupSection.classList.remove('collapsed'); setupToggle.textContent = '点击折叠';
             clearGameState();
@@ -1097,6 +1074,9 @@
                 roundLimitInput.value = gameState.roundLimit;
                 totalLimitInput.value = gameState.totalLimit;
                 roundLimitInput.disabled = true; totalLimitInput.disabled = true;
+                document.querySelector(`input[name="gameMode"][value="${gameState.gameMode}"]`).checked = true;
+                lockGameMode(); // 恢复时锁定
+
                 updateWinnerRadio();
                 renderGameArea();
                 renderHistory();
@@ -1123,7 +1103,9 @@
                 if (confirm('确定清空历史？')) { gameState.history = []; renderHistory(); saveGameState(); updateStatusBar('历史已清空'); }
             });
             scoresBody.addEventListener('change', e => {
-                if (e.target.classList.contains('card-count') || e.target.classList.contains('bomb-count')) calculateCurrentRound();
+                if (e.target.classList.contains('card-count') || e.target.classList.contains('bomb-count') || e.target.classList.contains('spring-check')) {
+                    calculateCurrentRound();
+                }
             });
         });
     </script>
